@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/fragment_bg"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:padding="8dp"
+        android:background="@color/white"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/ll_bank_info"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_bank_name"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="陕坝农商银行和哈哈哈哈哈哈"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/bank_tel"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="12321321哈哈312"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_choseGPS"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/ll_bank_info"
+            android:layout_width="25dp"
+            android:layout_height="28dp"
+            android:background="@mipmap/nav_icon"/>
+    </RelativeLayout>
+</FrameLayout>

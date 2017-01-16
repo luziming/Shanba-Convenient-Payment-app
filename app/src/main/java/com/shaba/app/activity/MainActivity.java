@@ -1,0 +1,165 @@
+package com.shaba.app.activity;
+
+import android.app.Fragment;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.shaba.app.R;
+import com.shaba.app.fragment.HomeFragment;
+import com.shaba.app.fragment.ReplacePhoneNumerFragment;
+import com.shaba.app.fragment.ResetPasswordFragment;
+import com.shaba.app.fragment.base.FragmentFactory;
+import com.shaba.app.utils.ToastUtils;
+
+import butterknife.Bind;
+import de.greenrobot.event.EventBus;
+
+public class MainActivity extends BaseActivity {
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.dl_left)
+    DrawerLayout mDrawerLayout;
+    @Bind(R.id.navigation_view)
+    NavigationView navigation_view;
+    @Bind(R.id.fl_container)
+    FrameLayout fl_container;
+    @Bind(R.id.ll_left)
+    LinearLayout ll_left;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+    private TextView toolbar_title;
+    private long mExitTime;
+    @Override
+    protected int getLayoutID() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initView() {
+        //初始化Toolbar
+        initToolbar();
+        //设置菜单列表
+        setOnRightMenuClick();
+
+        EventBus.getDefault().register(this);
+//        6F:1E:F9:98:29:53:D3:8D:CF:B8:CF:2F:E7:12:01:4A:D3:7C:0F:0D
+
+    }
+
+
+    @Override
+    protected void elseView() {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                //将侧边栏顶部延伸至status bar
+                mDrawerLayout.setFitsSystemWindows(true);
+                //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
+                mDrawerLayout.setClipToPadding(false);
+            }
+
+    }
+
+
+    private void setOnRightMenuClick() {
+        /**设置MenuItem的字体颜色**/
+        Resources resource = (Resources) getBaseContext().getResources();
+        ColorStateList csl = (ColorStateList) resource.getColorStateList(R.color.navigation_menu_item_color);
+        navigation_view.setItemTextColor(csl);
+        /**设置MenuItem默认选中项**/
+        navigation_view.getMenu().getItem(0).setChecked(true);
+        initFragment(new HomeFragment());
+        navigation_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        fragment = FragmentFactory.create(0);
+                        break;
+                    case R.id.about_us:
+                        fragment = FragmentFactory.create(1);
+                        break;
+                    case R.id.reset_pass:   //这个需要每次创建新的Fragment
+                        fragment = new ResetPasswordFragment();
+                        break;
+                    case R.id.record_sele:
+                        fragment = FragmentFactory.create(2);
+                        break;
+                    case R.id.update_phone:
+                        fragment = new ReplacePhoneNumerFragment();
+                        break;
+                    case R.id.exit:
+                        ToastUtils.showToast(item.getTitle() + "");
+                        break;
+                }
+                if (fragment != null) {
+                    initFragment(fragment);
+                    item.setChecked(true);
+                    toolbar_title.setText(item.getItemId() == R.id.home ? "陕坝缴费宝" : item.getTitle());
+                }
+                mDrawerLayout.closeDrawer(ll_left);
+                return true;
+            }
+        });
+    }
+
+    private void initFragment(Fragment fragment) {
+        getFragmentManager()
+                .beginTransaction().
+                replace(R.id.fl_container, fragment).commit();
+    }
+
+    private void initToolbar() {
+        toolbar.setTitle("");//设置Toolbar标题
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText("陕坝缴费宝");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //创建返回键，并实现打开关/闭监听
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    public void onEvent(String type) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(ll_left)) {
+            mDrawerLayout.closeDrawer(ll_left);
+        } else {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                ToastUtils.showToast("再按一次退出程序");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                super.onBackPressed();
+            }
+
+        }
+    }
+}

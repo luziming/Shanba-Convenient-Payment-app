@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">陕坝缴费宝</string>
+
+    <!-- 登陆 -->
+    <string name="login">登&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;录</string>
+    <string name="password">密&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;码  :</string>
+    <string name="free_regist">免费注册</string>
+    <string name="forgot_password">忘记密码？</string>
+    <string name="about_us_content">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;“陕坝缴费宝”是银联旗下便民缴费平台。由内蒙古农金电子科技有限公司开发，通过行业前置平台接入银联内容与渠道管理平台，实现线上线下多渠道的便民缴费业务。
+“陕坝缴费宝”是内蒙古便民缴费业务的先行者，APP缴费业务的独立提供者，涵盖了水、电、暖、有线电视、手机充值、固话宽带、游戏点卡等多项公共事业缴费项目，后期还会加入学费，物业费等缴费项目，基本全面覆盖老百姓日常缴费所需。使用专业安全的银联支付控件，支持多行卡支付的同时，保证信息和资金安全。客户只要下载该客户端并注册成功，就能够开始享受不受时间、地点限制的“轻松缴费之旅”。
+
+    </string>
+    <string name="alert_elec">一、本次缴费满100元立减10元活动仅限陕坝农商银行持金牛卡客户参加。\n二、客户需通过陕坝农商银行金牛卡进行在线支付方可享受优惠（他行银行卡不参与本次活动）。\n三、本次活动最终解释权归陕坝农商银行所有。 </string>
+    <string name="once_input_pswd">请再次输入以确认</string>
+    <string name="reseting_pass">修改密码</string>
+    <string name="originalpassword">原密码:</string>
+    <string name="input_pswd">请输入6－18位登录密码</string>
+    <string name="input_password">输入密码</string>
+    <string name="chooseGps">选择导航</string>
+</resources>

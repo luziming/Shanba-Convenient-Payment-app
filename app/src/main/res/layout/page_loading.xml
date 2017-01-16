@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_bg"
+    xmlns:lv="http://schemas.android.com/apk/res-auto">
+
+    <me.wangyuwei.loadingview.LoadingView
+        android:layout_centerInParent="true"
+        android:id="@+id/loading_view"
+        lv:lv_duration="4"
+        lv:lv_end_color="#6f9655"
+        lv:lv_external_radius="30dp"
+        lv:lv_internal_radius="5dp"
+        lv:lv_start_color="#b6b654"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+
+</RelativeLayout>
