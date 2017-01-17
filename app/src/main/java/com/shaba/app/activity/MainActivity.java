@@ -58,7 +58,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-
     @Override
     protected void elseView() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

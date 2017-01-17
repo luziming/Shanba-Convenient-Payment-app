@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_elec_notif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FEDAB4" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/advice_info"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="因欠费被停电的客 户在缴费后需拨打农电局电话6620444以恢复供电"
+            android:textColor="#FF0000"
+            android:textSize="@dimen/padding_or_margin_12" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_or_margin_25"
+        android:layout_marginRight="@dimen/padding_or_margin_25"
+        android:layout_marginTop="@dimen/padding_or_margin_25"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_18"
+            android:textColor="#9b9b9b"
+            android:text="@string/elec_company" />
+
+        <Spinner
+            android:id="@+id/spinner_choose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_or_margin_10"
+            android:background="@drawable/spinner_selector"
+            android:textSize="@dimen/text_size_16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_or_margin_25"
+        android:layout_marginRight="@dimen/padding_or_margin_25"
+        android:layout_marginTop="@dimen/padding_or_margin_10"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_18"
+            android:textColor="#9b9b9b"
+            android:text="@string/elec_no" />
+
+        <AutoCompleteTextView
+            android:id="@+id/ccav_electricity_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:hint="@string/elec_no_hint"
+            android:digits="0123456789"
+            android:lines="1"
+            style="@style/myAutoCompleteTextViewStyle"
+            android:maxLength="13"
+            android:clickable="true"
+            android:singleLine="true"
+            android:padding="@dimen/padding_or_margin_12"
+            android:textColorHint="@color/phone_recharge_text"
+            android:textSize="@dimen/text_size_16"
+            android:inputType="number" />
+        <requestFocus/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/electricity_next"
+        android:textSize="@dimen/text_size_18"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="45dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/padding_or_margin_60"
+        android:layout_marginLeft="@dimen/padding_or_margin_25"
+        android:layout_marginRight="@dimen/padding_or_margin_25"
+        android:background="@drawable/logback_btn_style"
+        android:clickable="true"
+        android:text="@string/elec_btn_next" />
+</LinearLayout>

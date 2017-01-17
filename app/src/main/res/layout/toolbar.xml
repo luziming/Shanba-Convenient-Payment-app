@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="5dp"
     android:background="@drawable/tilte_bg"
-    android:paddingTop="@dimen/toolbar_padding_top"
+    android:elevation="5dp"
     android:minHeight="?attr/actionBarSize"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/toolbar_padding_top"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:theme="@style/toolbar_theme">
 
-    <TextView
-        android:id="@+id/toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
 </android.support.v7.widget.Toolbar>

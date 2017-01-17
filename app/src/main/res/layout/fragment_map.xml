@@ -40,6 +40,8 @@
                 android:textColor="#000000" />
         </LinearLayout>
         <ImageView
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="3dp"
             android:id="@+id/iv_choseGPS"
             android:layout_alignParentRight="true"
             android:layout_alignBottom="@+id/ll_bank_info"

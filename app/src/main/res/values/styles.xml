@@ -29,4 +29,80 @@
         <item name="android:padding">10dp</item>
         <item name="android:password">true</item>
     </style>
+
+    <style name="myAutoCompleteTextViewStyle" parent="@android:style/Widget.AutoCompleteTextView">
+        <item name="android:popupBackground">@color/bg_white</item>
+        <item name="android:dropDownVerticalOffset">5dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <item name="android:divider">@color/darkseagreen</item>
+    </style>
+
+    <style name="CustomProgressDialog" parent="@style/CustomDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="textview_info_linelayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/padding_or_margin_15</item>
+        <item name="android:layout_marginRight">@dimen/padding_or_margin_15</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="textview_info_left">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/textview_left</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="textview_info_right">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:lines">2</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+    </style>
+
+    <style name="textview_info_center">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:lines">2</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="view_height_1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">@dimen/padding_or_margin_15</item>
+        <item name="android:layout_marginRight">@dimen/padding_or_margin_15</item>
+        <item name="android:background">#e6e6e6</item>
+    </style>
+    <style name="view_height_1_nomargin">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#e6e6e6</item>
+    </style>
+
 </resources>

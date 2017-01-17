@@ -2,10 +2,12 @@ package com.shaba.app.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -35,7 +37,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 /*
                    _ooOoo_
@@ -59,7 +60,7 @@ import de.greenrobot.event.EventBus;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdapter.OnItemClickListener, MapHolder.OnMapClickListener, NewsHolder.OnMoreNewsClickListener {
+public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdapter.OnItemClickListener, MapHolder.OnMapClickListener, NewsHolder.OnNewsClickListener {
 
 
     @Bind(R.id.ll_home_container)
@@ -80,7 +81,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
     public View initFragment() {
 
         View view = inflater.inflate(R.layout.fragment_home, null);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         /********首页轮播图*********/
         bannerHolder = new HomeBannerHolder();
@@ -118,26 +119,28 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
         //获取新闻轮播图
         RequestParams params = new RequestParams();
         params.put("type_id", 2);
-        appUtil.getNewsTopPic(params,new NewBannerResponseHandler(), token);
+        appUtil.getNewsTopPic(params, new NewBannerResponseHandler(), token);
         //获取新闻
         appUtil.getNewList(new NewListResponseHandler(), token);
     }
 
     /**
      * 功能菜单的点击事件
+     *
      * @param position
      */
     @Override
     public void onClick(int position) {
+        String type = "";
         switch (position) {
             case 0:
-                ToastUtils.showToast("电费");
+                type = "electricity";
                 break;
             case 1:
                 ToastUtils.showToast("宽带缴费");
                 break;
             case 2:
-                ToastUtils.showToast("手机话费");
+                type = "phone-charge";
                 break;
             case 3:
                 ToastUtils.showToast("固话缴费");
@@ -149,7 +152,8 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 ToastUtils.showToast("社保查询");
                 break;
             case 6:
-                ToastUtils.showToast("有线电视");
+                ToastUtils.showToast("该功能即将上线!");
+                type = null;
                 break;
             case 7:
                 ToastUtils.showToast("社保装态");
@@ -179,6 +183,12 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 ToastUtils.showToast("全行业缴费");
                 break;
         }
+        if (!TextUtils.isEmpty(type)){
+            Intent intent = new Intent(mActivity, SecondActivity.class);
+            intent.putExtra("type", type);
+            lanuchActivity(intent);
+        }
+
     }
 
     /**
@@ -188,28 +198,47 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
     @Override
     public void onMapListClick(int position) {
         Intent intent = new Intent(mActivity, SecondActivity.class);
-        switch(position){
-            case 0 :
-                ToastUtils.showToast("网点地图");
-                EventBus.getDefault().post("s");
-                intent.putExtra("type","bank-map");
+        switch (position) {
+            case 0:
+                intent.putExtra("type", "bank-map");
                 break;
-            case 1 :
-                ToastUtils.showToast("ATM地图");
-                intent.putExtra("type","atm-map");
+            case 1:
+                intent.putExtra("type", "atm-map");
                 break;
-            case 2 :
-                ToastUtils.showToast("助农点地图");
-                intent.putExtra("type","farmers-point-map");
+            case 2:
+                intent.putExtra("type", "farmers-point-map");
                 break;
         }
+        lanuchActivity(intent);
+    }
+
+    private void lanuchActivity(Intent intent) {
         startActivity(intent);
         mActivity.overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
     }
 
+    /**
+     * 更多新闻
+     */
     @Override
     public void onMoreNewsClick() {
-        ToastUtils.showToast("更多新闻");
+        Intent intent = new Intent(mActivity, SecondActivity.class);
+        intent.putExtra("type", "more-news");
+        lanuchActivity(intent);
+    }
+
+    /**
+     * 新闻列表
+     */
+    @Override
+    public void onNewsItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String url = newsList.get(position).getUrl();
+        String title = newsList.get(position).getTitle();
+        Intent intent = new Intent(mActivity, SecondActivity.class);
+        intent.putExtra("type", "news-detail")
+                .putExtra("url", url)
+                .putExtra("title", title);
+        lanuchActivity(intent);
     }
 
     /**
@@ -228,7 +257,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                     bannerHolder.bindData(topPicList);
                     homeBannerOk = true;
                 }
-                if (homeBannerOk && newsBannerOk){
+                if (homeBannerOk && newsBannerOk) {
                     Zz();
                     //scrollView滑动到顶部
                     scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -260,7 +289,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                     newsBannerHolder.bindData(topPicList);
                     newsBannerOk = true;
                 }
-                if (homeBannerOk && newsBannerOk){
+                if (homeBannerOk && newsBannerOk) {
                     Zz();
                     //scrollView滑动到顶部
                     scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -277,7 +306,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
     }
 
     /**
-     * 处理 新闻信息:
+     * 处理新闻信息:
      */
     class NewListResponseHandler extends AsyncHttpResponseHandler {
 

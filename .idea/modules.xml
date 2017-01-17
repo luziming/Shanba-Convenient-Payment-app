@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Shanba-Convenient-Payment-app.iml" filepath="$PROJECT_DIR$/Shanba-Convenient-Payment-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/banner/banner.iml" filepath="$PROJECT_DIR$/banner/banner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pullToReFresh_library/pullToReFresh_library.iml" filepath="$PROJECT_DIR$/pullToReFresh_library/pullToReFresh_library.iml" />
     </modules>
   </component>
 </project>

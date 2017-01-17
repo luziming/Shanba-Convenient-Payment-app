@@ -1,14 +1,26 @@
 package com.shaba.app.activity;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.shaba.app.R;
 import com.shaba.app.fragment.BankMapFragment;
+import com.shaba.app.fragment.ElectricityFragment;
 import com.shaba.app.fragment.FarmersPointMapFragment;
+import com.shaba.app.fragment.MoreNewsFragment;
+import com.shaba.app.fragment.NewsDetailFragment;
+import com.shaba.app.fragment.PhoneBillFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -49,6 +61,13 @@ public class SecondActivity extends BaseActivity {
     }
 
     public void onEvent(String title) {
+        checkTitleLength(title);
+        AnimatorSet alphaSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.title_right_enter);
+        alphaSet.setTarget(toolbar_title);
+        alphaSet.start();
+    }
+
+    private void checkTitleLength(String title) {
         toolbar_title.setText(title);
     }
 
@@ -56,14 +75,22 @@ public class SecondActivity extends BaseActivity {
     protected void initView() {
         EventBus.getDefault().register(this);
         String type = getIntent().getStringExtra("type");
+        String t = getIntent().getStringExtra("title");
         Fragment fragment = null;
         Bundle bundle = new Bundle();
         switch(type){
+            case "electricity":
+                title = "电费查询";
+                fragment = new ElectricityFragment();
+                break;
+            case "phone-charge":
+                title = "手机话费";
+                fragment = new PhoneBillFragment();
+                break;
             case "bank-map":
                 title = "网点地图";
                 bundle.putInt("MAP_TYPE",1);
                 fragment = new BankMapFragment();
-                fragment.setArguments(bundle);
                 break;
             case "atm-map":
                 title = "ATM地图";
@@ -73,9 +100,18 @@ public class SecondActivity extends BaseActivity {
             case "farmers-point-map":
                 title = "助农点地图";
                 fragment = new FarmersPointMapFragment();
-                fragment.setArguments(bundle);
+                break;
+            case "news-detail": //新闻内容
+                title = t;
+                bundle.putString("url",getIntent().getStringExtra("url"));
+                fragment = new NewsDetailFragment();
+                break;
+            case "more-news":
+                title = "更多新闻";
+                fragment = new MoreNewsFragment();
                 break;
         }
+        fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fl_container_content,fragment)
                 .commit();
@@ -86,7 +122,7 @@ public class SecondActivity extends BaseActivity {
     private void initToolbar() {
         toolbar.setTitle("");//设置Toolbar标题
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(title);
+        checkTitleLength(title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,7 +141,7 @@ public class SecondActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         if (getFragmentManager().getBackStackEntryCount() == 0) {
-            toolbar_title.setText(title);
+            checkTitleLength(title);
         }
         overridePendingTransition(R.anim.activity_enter,R.anim.activity_exit);
     }
@@ -114,5 +150,74 @@ public class SecondActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*************************************************
+         * 步骤3：处理银联手机支付控件返回的支付结果
+         ************************************************/
+        if (data == null) {
+            return;
+        }
+
+        String msg = "";
+        /*
+         * 支付控件返回字符串:success、fail、cancel 分别代表支付成功，支付失败，支付取消
+         */
+        String str = data.getExtras().getString("pay_result");
+
+        if (str.equalsIgnoreCase("success")) {
+            // 支付成功后，extra中如果存在result_data，取出校验
+            // result_data结构见c）result_data参数说明
+            if (data.hasExtra("result_data")) {
+                String result = data.getExtras().getString("result_data");
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    String sign = resultJson.getString("sign");
+                    String dataOrg = resultJson.getString("data");
+                    // 验签证书同后台验签证书
+                    // 此处的verify，商户需送去商户后台做验签
+                    boolean ret = verify(dataOrg, sign, "01");
+                    if (ret) {
+                        // 验证通过后，显示支付结果
+                        msg = "支付成功！";
+                    } else {
+                        // 验证不通过后的处理
+                        // 建议通过商户后台查询支付结果
+                        msg = "支付失败！";
+                    }
+                } catch (JSONException e) {
+
+                }
+            } else {
+                // 未收到签名信息
+                // 建议通过商户后台查询支付结果
+                msg = "支付成功！";
+            }
+        } else if (str.equalsIgnoreCase("fail")) {
+            msg = "支付失败！";
+        } else if (str.equalsIgnoreCase("cancel")) {
+            msg = "用户取消了支付";
+        }
+        onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("支付结果通知");
+        builder.setMessage(msg);
+        builder.setInverseBackgroundForced(true);
+        // builder.setCustomTitle();
+        builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private boolean verify(String msg, String sign64, String mode) {
+        // 此处的verify，商户需送去商户后台做验签
+        return true;
     }
 }

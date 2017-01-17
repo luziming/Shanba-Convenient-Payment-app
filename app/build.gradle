@@ -30,4 +30,5 @@ dependencies {
     compile 'me.wangyuwei:LoadingiVew:1.0.5'
     compile 'com.orhanobut:logger:1.15'
     compile project(':banner')
+    compile project(':pullToReFresh_library')
 }

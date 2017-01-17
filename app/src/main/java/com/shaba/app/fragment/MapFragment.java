@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -24,10 +25,20 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DrivePath;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.shaba.app.R;
 import com.shaba.app.been.MapListEntity;
 import com.shaba.app.fragment.base.BaseFragment;
+import com.shaba.app.global.Const;
+import com.shaba.app.overlay.SchemeDriveOverlay;
+import com.shaba.app.utils.SBLog;
+import com.shaba.app.utils.SchemeUtil;
+import com.shaba.app.utils.ToastUtil;
 import com.shaba.app.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -58,7 +69,7 @@ import butterknife.ButterKnife;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener, View.OnClickListener{
+public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener, View.OnClickListener, RouteSearch.OnRouteSearchListener {
 
     @Bind(R.id.map)
     MapView map;
@@ -97,10 +108,9 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         tvBankName.setText(address);
         tel = mapInfo.getTel();
         tvBankTel.setText(tel);
-
         ivChoseGPS.setOnClickListener(this);
         initAmap();
-
+        mEndPoint = new LatLonPoint(addressLngLat.latitude, addressLngLat.longitude);
         return view;
     }
 
@@ -126,15 +136,17 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         aMap.setMyLocationEnabled(true);
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_ROTATE);
+        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
 
         aMap.getUiSettings().setScaleControlsEnabled(true);
+
+        aMap.getUiSettings().setZoomControlsEnabled(false);
         aMap.getUiSettings().setCompassEnabled(true);
 //        AMapNavi.getInstance()
         addMarkersToMap();
 
         mRouteSearch = new RouteSearch(mActivity);
-//        mRouteSearch.setRouteSearchListener(this);
+        mRouteSearch.setRouteSearchListener(this);
     }
 
     @Override
@@ -151,9 +163,6 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
     public void onDestroyView() {
         super.onDestroyView();
         Log.e("MapFragment", "onDestroyView: 执行");
-        ButterKnife.unbind(this);
-
-
     }
 
     @Override
@@ -254,8 +263,13 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
 //                aMapLocation.getAdCode();// 地区编码
 //                aMapLocation.getAoiName();// 获取当前定位点的AOI信息
                 mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-                latlng = new LatLng(aMapLocation.getLatitude(),
-                        aMapLocation.getLongitude());
+
+                Double geoLat = aMapLocation.getLatitude();
+                Double geoLng = aMapLocation.getLongitude();
+
+                mStartPoint = new LatLonPoint(geoLat, geoLng);
+                SBLog.d(mStartPoint.toString());
+                latlng = new LatLng(geoLat,geoLng);
                 if (isFirst) {
                     LatLngBounds bounds = new LatLngBounds.Builder()
                             .include(addressLngLat).include(latlng).build();
@@ -289,7 +303,7 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
 
     @Override
     public void onClick(View v) {
-        ToastUtils.showToast("请选择导航!!");
+        searchRouteResult(2, RouteSearch.DRIVING_SINGLE_DEFAULT);
     }
 
     /**
@@ -297,25 +311,27 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
      */
     public void searchRouteResult(int routeType, int mode) {
         if (mStartPoint == null) {
-            ToastUtils.showToast( "定位中，稍后再试...");
+            ToastUtils.showToast("定位中，稍后再试...");
             return;
         }
         if (mEndPoint == null) {
-            ToastUtils.showToast( "终点未设置");
+            ToastUtils.showToast("终点未设置");
         }
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
                 mStartPoint, mEndPoint);
         //发送路线计算请求
-            RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, mode, null,
-                    null, "");// 第一个参数表示路径规划的起点和终点，第二个参数表示驾车模式，第三个参数表示途经点，第四个参数表示避让区域，第五个参数表示避让道路
-            mRouteSearch.calculateDriveRouteAsyn(query);// 异步路径规划驾车模式查询
+        RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, mode, null,
+                null, "");// 第一个参数表示路径规划的起点和终点，第二个参数表示驾车模式，第三个参数表示途经点，第四个参数表示避让区域，第五个参数表示避让道路
+        mRouteSearch.calculateDriveRouteAsyn(query);// 异步路径规划驾车模式查询
     }
 
-//    @Override
-//    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-////        DrivingRouteOverlay s =
-//    }
-    /*private DriveRouteResult mDriveRouteResult;
+    @Override
+    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+//        DrivingRouteOverlay s =
+    }
+
+    private DriveRouteResult mDriveRouteResult;
+
 
     @Override
     public void onDriveRouteSearched(DriveRouteResult result, int errorCode) {
@@ -328,26 +344,27 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
                             .get(0);
                     aMap.clear();// 清理地图上的所有覆盖物
                     SchemeDriveOverlay drivingRouteOverlay = new SchemeDriveOverlay(
-                            this, aMap, drivePath,
+                            mActivity, aMap, drivePath,
                             mDriveRouteResult.getStartPos(),
-                            mDriveRouteResult.getTargetPos());
+                            mDriveRouteResult.getTargetPos(), null);
                     drivingRouteOverlay.removeFromMap();
                     drivingRouteOverlay.addToMap();
                     drivingRouteOverlay.zoomToSpan();
-                    mBottomLayout.setVisibility(View.VISIBLE);
+//                    mBottomLayout.setVisibility(View.VISIBLE);
                     int dis = (int) drivePath.getDistance();
                     int dur = (int) drivePath.getDuration();
                     String des = SchemeUtil.getBusRouteTitle(dur, dis);
-                    mRotueTimeDes.setText(des);
+                    Toast.makeText(mActivity,des,Toast.LENGTH_LONG).show();
+//                    mRotueTimeDes.setText(des);
                     int taxiCost = (int) mDriveRouteResult.getTaxiCost();
-                    SpannableStringBuilder spanabledes = SchemeUtil
+                    /*SpannableStringBuilder spanabledes = SchemeUtil
                             .getRouteDes(this.getApplication(), taxiCost);
                     mRouteDetailDes.setText(spanabledes);
                     mBottomLayout.setOnClickListener(new OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext,
+                            Intent intent = new Intent(mActivity,
                                     DriveRouteDetailActivity.class);
                             intent.putExtra(BundleFlag.DRIVE_PATH, drivePath);
                             intent.putExtra(BundleFlag.DRIVE_RESULT,
@@ -356,30 +373,30 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
                                     mCloudItem.getTitle());
                             startActivity(intent);
                         }
-                    });
+                    });*/
                 } else if (result != null && result.getPaths() == null) {
-                    ToastUtil.show(mContext, R.string.route_suggestion_walk);
+                    ToastUtil.show(mActivity, R.string.route_suggestion_walk);
                 }
 
             } else {
-                ToastUtil.show(mContext, R.string.error_route_result_drive);
+                ToastUtil.show(mActivity, R.string.error_route_result_drive);
             }
         } else if (errorCode == Const.ERROR_CODE_SOCKE_TIME_OUT) {
-            ToastUtil.show(this.getApplicationContext(),
+            ToastUtil.show(mActivity.getApplicationContext(),
                     R.string.error_socket_timeout);
         } else if (errorCode == Const.ERROR_CODE_UNKNOW_HOST) {
             ToastUtil
-                    .show(this.getApplicationContext(), R.string.error_network);
+                    .show(mActivity.getApplicationContext(), R.string.error_network);
         } else if (errorCode == Const.ERROR_CODE_FAILURE_AUTH) {
-            ToastUtil.show(this.getApplicationContext(), R.string.error_key);
+            ToastUtil.show(mActivity.getApplicationContext(), R.string.error_key);
         } else if (errorCode == 33) {
-            ToastUtil.show(this.getApplicationContext(),
+            ToastUtil.show(mActivity.getApplicationContext(),
                     R.string.error_route_result_drive);
         } else if (errorCode == Const.ERROR_CODE_TABLEID) {
-            ToastUtil.show(this.getApplicationContext(),
+            ToastUtil.show(mActivity.getApplicationContext(),
                     R.string.error_table_id);
         } else {
-            ToastUtil.show(this.getApplicationContext(),
+            ToastUtil.show(mActivity.getApplicationContext(),
                     getString(R.string.error_other) + errorCode);
         }
     }
@@ -392,5 +409,5 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
 
-    }*/
+    }
 }

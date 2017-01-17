@@ -1,6 +1,7 @@
 package com.shaba.app.holder;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.shaba.app.R;
@@ -42,13 +43,14 @@ public class NewsHolder extends BasicHolder<List<NewsListEntity>> {
     @Bind(R.id.btn_seeAll)
     Button btnSeeAll;
 
-    private OnMoreNewsClickListener mOnMoreNewsClickListener;
+    private OnNewsClickListener mOnMoreNewsClickListener;
 
-    public interface OnMoreNewsClickListener {
+    public interface OnNewsClickListener {
         void onMoreNewsClick();
+        void onNewsItemClick(AdapterView<?> parent, View view, int position, long id);
     }
 
-    public void setOnMapClickListener(OnMoreNewsClickListener mOnMoreNewsClickListener) {
+    public void setOnMapClickListener(OnNewsClickListener mOnMoreNewsClickListener) {
         this.mOnMoreNewsClickListener = mOnMoreNewsClickListener;
     }
 
@@ -60,6 +62,14 @@ public class NewsHolder extends BasicHolder<List<NewsListEntity>> {
             public void onClick(View v) {
                 if (mOnMoreNewsClickListener != null) {
                     mOnMoreNewsClickListener.onMoreNewsClick();
+                }
+            }
+        });
+        listdis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mOnMoreNewsClickListener != null) {
+                    mOnMoreNewsClickListener.onNewsItemClick(parent,view,position,id);
                 }
             }
         });

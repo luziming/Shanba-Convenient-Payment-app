@@ -12,6 +12,47 @@
     <color name="fragment_bg">#FAFAFA</color>
     <color name="background_user">#F2F2F2</color><!--主色 按住蓝 -->
     <color name="black_user">#333333</color><!--主色  -->
+    <color name="gray_dark">#999999</color>
+    <color name="seriousgray">#000000</color>
+    <color name="backwhite">#e6e6e6</color>
+    <color name="gray_light">#F0F0F0</color>
+    <!-- longbh -->
+    <color name="back_logo">#1b8827</color>
+    <color name="back_logo_i">#006600</color>
+    <color name="smbit_btn">#ff9000</color>
+    <color name="smbit_btn_i">#FF8C00</color>
+    <color name="page_title_color">#0072BB</color>
+    <color name="white_content_color">#FFFFFF</color>
+    <color name="line_target">#C2C3C7</color>
+    <!-- 首页色值 -->
+    <color name="water_color">#4cb6eb</color>
+    <!-- 水费 -->
+    <color name="electricity_color">#f7b940</color>
+    <!-- 电费 -->
+    <color name="warm_color">#ff6634</color>
+    <!-- 取暖费 -->
+    <color name="phone_color">#2ebe6d</color>
+    <!-- 手机充值 -->
+    <color name="radio_color">#c32fb7</color>
+    <!-- 广电缴费 -->
+    <color name="appt_title_backcolor">#50b46b</color>
+    <!-- app 标题背景色 -->
+
+
+    <!-- 手机充值页面绿色 -->
+    <color name="phone_recharge_title">#50b46b</color>
+    <color name="phone_recharge_text">#929292</color>
+    <color name="phone_edittext_border">#e8e8e8</color>
+    <color name="electricity_title">#e5af05</color>
+    <color name="water_title">#10b3ea</color>
+    <!-- 提交页面左侧textview字体颜色 -->
+    <color name="textview_left">#9b9b9b</color>
+    <color name="amount_color">#7bc48c</color>
+    <color name="font_red">#FF0000</color>
+    <color name="tv_title">#ad71ff</color>
+    <color name="red_lignt">#FF6000</color>
+
+
     <!--常用颜色定义 -->
 
     <color name="white">#FFFFFF</color><!--白色 -->
