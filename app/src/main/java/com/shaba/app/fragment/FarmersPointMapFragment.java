@@ -14,6 +14,7 @@ import com.shaba.app.been.MapListEntity;
 import com.shaba.app.fragment.base.BaseLoadingFragment;
 import com.shaba.app.fragment.base.FragmentUtils;
 import com.shaba.app.utils.GsonTools;
+import com.shaba.app.utils.StringUtil;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -74,7 +75,8 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-
+                if (StringUtil.isFastClick())
+                    return false;
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("mapInfo",item_list.get(groupPosition).get(childPosition));
                 MapFragment mapFragment = new MapFragment();

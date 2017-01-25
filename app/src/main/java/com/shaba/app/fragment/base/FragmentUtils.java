@@ -43,6 +43,20 @@ public class FragmentUtils {
                 .add(content, fragment)
                 .addToBackStack(null).commit();
     }
+    /**
+     * 以极其炫酷的方式开启Fragment,不加入回退栈
+     */
+    public static void startFragment(Activity activity, Fragment fragment, int content) {
+        activity.getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.animator.fragment_slide_left_enter,
+                        R.animator.fragment_slide_left_exit,
+                        R.animator.fragment_slide_right_enter,
+                        R.animator.fragment_slide_right_exit)
+                .add(content, fragment)
+                .commit();
+    }
 
     /**
      * 以极其炫酷的方式开启Fragment,带tag

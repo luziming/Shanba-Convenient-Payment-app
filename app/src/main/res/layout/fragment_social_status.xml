@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backwhite"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/padding_or_margin_25"
+            android:layout_marginRight="@dimen/padding_or_margin_25"
+            android:layout_marginTop="@dimen/padding_or_margin_25"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ID_number"
+                android:textColor="#9b9b9b"
+                android:textSize="@dimen/text_size_18" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoComplete_status_id"
+                style="@style/myAutoCompleteTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/id_num_hint"
+                android:imeOptions="actionDone"
+                android:lines="1"
+                android:maxLength="18"
+                android:padding="@dimen/padding_or_margin_12"
+                android:textColorHint="@color/phone_recharge_text"
+                android:textSize="@dimen/text_size_16" />
+
+            <requestFocus />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/padding_or_margin_25"
+            android:layout_marginRight="@dimen/padding_or_margin_25"
+            android:layout_marginTop="@dimen/padding_or_margin_10"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/real_name"
+                android:textColor="#9b9b9b"
+                android:textSize="@dimen/text_size_18" />
+
+            <EditText
+                android:id="@+id/et_realNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="@string/real_name_hint"
+                android:imeOptions="actionDone"
+                android:lines="1"
+                android:maxLength="18"
+                android:padding="@dimen/padding_or_margin_12"
+                android:textColorHint="@color/phone_recharge_text"
+                android:textSize="@dimen/text_size_16" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_query_social_security"
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/padding_or_margin_25"
+            android:layout_marginRight="@dimen/padding_or_margin_25"
+            android:layout_marginTop="@dimen/padding_or_margin_60"
+            android:background="@drawable/logback_btn_style"
+            android:clickable="true"
+            android:text="@string/social_security_next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+
+</LinearLayout>

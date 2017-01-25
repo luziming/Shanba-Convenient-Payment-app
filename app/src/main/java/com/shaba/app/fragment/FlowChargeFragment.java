@@ -1,6 +1,9 @@
 package com.shaba.app.fragment;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -22,7 +25,6 @@ import com.shaba.app.fragment.base.BaseFragment;
 import com.shaba.app.global.ConstantUtil;
 import com.shaba.app.utils.RegexUtil;
 import com.shaba.app.utils.StringUtil;
-import com.shaba.app.utils.ToastUtil;
 import com.shaba.app.utils.ToastUtils;
 import com.shaba.app.utils.UnionPayUtils;
 import com.shaba.app.view.MyGridView;
@@ -39,8 +41,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.shaba.app.global.MyApplication.context;
 
 /*
                    _ooOoo_
@@ -64,7 +64,7 @@ import static com.shaba.app.global.MyApplication.context;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class PhoneBillFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class FlowChargeFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
 
     @Bind(R.id.recharge_tel_num)
@@ -217,7 +217,7 @@ public class PhoneBillFragment extends BaseFragment implements View.OnClickListe
                         adapter.setSelectItem(ConstantUtil.RECHANGE_AMOUNT_DEFAULT);
 
                     } else {
-                        ToastUtil.show(context, R.string.recharge_num_error);
+                        ToastUtils.showToast(mActivity.getResources().getString(R.string.recharge_num_error));
                     }
                 }
             }
@@ -240,12 +240,14 @@ public class PhoneBillFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        if (StringUtil.isFastClick())
+            return;
         switch (v.getId()) {
             case R.id.elec_recharge_btn:
                 phoneNumber = rechargeTelNum.getText().toString().trim();
                 phoneNumber = phoneNumber.replaceAll(" ", "");
                 if (!RegexUtil.telRegex(phoneNumber)) {
-                    ToastUtils.showToast(R.string.recharge_num_error + "");
+                    ToastUtils.showToast(mActivity.getResources().getString(R.string.recharge_num_error));
                     return;
                 }
                 Map<Object, Object> params = new HashMap<Object, Object>();
@@ -271,9 +273,10 @@ public class PhoneBillFragment extends BaseFragment implements View.OnClickListe
                 if (!response.getBoolean("success")) {
                     if (!response.isNull("error")) {
                         if ("noauth".equals(response.getString("error"))) {
-                            ToastUtils.showToast("" + R.string.re_login);
-                            Intent intent = new Intent(mActivity, LoginActivity.class);
-                            startActivity(intent);
+                            ToastUtils.showToast(mActivity.getResources().getString(R.string.re_login));
+                            startActivity(new Intent(mActivity, LoginActivity.class));
+                            mActivity.overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
+                            mActivity.finish();
                             return;
                         }
                     }
@@ -286,7 +289,7 @@ public class PhoneBillFragment extends BaseFragment implements View.OnClickListe
                     String tn = response.getJSONObject("obj").getString("tn");
                     String unionpayOrderId = response.getJSONObject("obj").getString("unionpayOrderId");
                     if (tn == null || tn.length() == 0) {
-                        UnionPayUtils.getInstance().checkTN(tn, mActivity);
+                        UnionPayUtils.getInstance().checkTN(mActivity);
                         return;
                     }
                     UnionPayUtils.getInstance().unionPay(mActivity, tn);
@@ -335,4 +338,44 @@ public class PhoneBillFragment extends BaseFragment implements View.OnClickListe
         adapter.setSelectItem(position);
         adapter.notifyDataSetChanged();
     }
+
+    private void getPhoneNum(Intent data) {
+
+        ContentResolver contentResolver = mActivity.getContentResolver();
+        // URI,每个ContentProvider定义一个唯一的公开的URI,用于指定到它的数据集
+        Uri contactData = data.getData();
+        // 查询就是输入URI等参数,其中URI是必须的,其他是可选的,如果系统能找到URI对应的ContentProvider将返回一个Cursor对象.
+        @SuppressWarnings("deprecation")
+        Cursor cursor = contentResolver.query(contactData, null, null, null, null);
+        cursor.moveToFirst();
+        // 获得DATA表中的名字
+        String username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+        // 条件为联系人ID
+        String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+        // 获得DATA表中的电话号码，条件为联系人ID,因为手机号码可能会有多个
+        Cursor phone = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+        String userNumber = "";
+        while (phone.moveToNext()) {
+            userNumber = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            userNumber = userNumber.replace(" ", "");
+            if (RegexUtil.telRegex(userNumber)) {
+                rechargeTelNum.setText(userNumber);
+            } else {
+                ToastUtils.showToast("请选择正确的号码!");
+            }
+        }
+
+        if (StringUtil.isEmpty(userNumber)) {
+            ToastUtils.showToast("号码为空，请确认是否已开启通讯录权限!");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null)
+        getPhoneNum(data);
+    }
 }
+

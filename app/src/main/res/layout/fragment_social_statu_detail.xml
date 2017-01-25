@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffd9d9">
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padding_or_margin_15">
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/social_security_name" />
+
+                <TextView
+                    android:id="@+id/tv_socialSecurityName"
+                    style="@style/textview_info_right" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/social_security_id" />
+
+                <TextView
+                    android:id="@+id/tv_socialSecurityId"
+                    style="@style/textview_info_right" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/social_security_state" />
+
+                <TextView
+                    android:id="@+id/tv_socialSecurityState"
+                    style="@style/textview_info_right" />
+            </LinearLayout>
+
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="match_parent"
+                android:layout_height="45dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/padding_or_margin_40"
+                android:layout_marginLeft="@dimen/padding_or_margin_16"
+                android:layout_marginRight="@dimen/padding_or_margin_16"
+                android:layout_marginTop="@dimen/padding_or_margin_40"
+                android:background="@drawable/submit_btn_style"
+                android:clickable="true"
+                android:text="@string/back_btn"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

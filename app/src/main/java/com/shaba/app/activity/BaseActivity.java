@@ -1,6 +1,7 @@
 package com.shaba.app.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -13,6 +14,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.shaba.app.R;
 import com.shaba.app.http.AppUtil;
 import com.shaba.app.utils.PrefUtils;
 import com.shaba.app.utils.SBLog;
@@ -91,7 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param event
      * @return
      */
-    private boolean isShouldHideInput(View v, MotionEvent event) {
+    protected boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {
             int[] l = {0, 0};
             v.getLocationInWindow(l);
@@ -113,10 +115,15 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param token
      */
-    private void hideSoftInput(IBinder token) {
+    protected void hideSoftInput(IBinder token) {
         if (token != null) {
             InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    protected void lanuchActivity(Intent intent) {
+        startActivity(intent);
+        overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
     }
 }

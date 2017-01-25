@@ -60,16 +60,18 @@ public class LoginActivity extends BaseActivity {
         EditTextClearTools.addclerListener(etPassword, delPassword);
     }
 
-    @OnClick({R.id.del_phonenumber, R.id.del_password, R.id.tv_forgetPw, R.id.login_c, R.id.bt_login})
+    @OnClick({R.id.tv_forgetPw, R.id.login_c, R.id.bt_login})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.del_phonenumber:
-                break;
-            case R.id.del_password:
-                break;
             case R.id.tv_forgetPw:
+                Intent i = new Intent(this, SecondActivity.class);
+                i.putExtra("type", "forget");
+                lanuchActivity(i);
                 break;
             case R.id.login_c:
+                Intent intent = new Intent(this, SecondActivity.class);
+                intent.putExtra("type", "register");
+                lanuchActivity(intent);
                 break;
             case R.id.bt_login:
                 phoneNumber = etPhonenumber.getText().toString().trim();
@@ -113,13 +115,6 @@ public class LoginActivity extends BaseActivity {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                     overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
-//                    if (flag) {
-//                        startActivity(new Intent(context, MainActivity_.class));
-//                        finish();
-//                    } else {
-//                        EventBus.getDefault().post("success");
-//                        finish();
-//                    }
                 }
             } catch (Exception e) {
                 e.getMessage();
@@ -128,7 +123,6 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//            ToastUtils.showToast(errorResponse.toString());
             bt_login.setText("登陆");
             bt_login.setClickable(true);
         }

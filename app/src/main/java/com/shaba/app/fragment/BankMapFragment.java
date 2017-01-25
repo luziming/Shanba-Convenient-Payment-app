@@ -14,6 +14,7 @@ import com.shaba.app.been.MapListEntity;
 import com.shaba.app.fragment.base.BaseLoadingFragment;
 import com.shaba.app.fragment.base.FragmentUtils;
 import com.shaba.app.utils.GsonTools;
+import com.shaba.app.utils.StringUtil;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -75,6 +76,8 @@ public class BankMapFragment extends BaseLoadingFragment implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (StringUtil.isFastClick())
+            return;
         Bundle bundle = new Bundle();
         bundle.putParcelable("mapInfo",entities.get(position));
         MapFragment mapFragment = new MapFragment();

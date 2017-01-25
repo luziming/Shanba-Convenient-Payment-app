@@ -64,6 +64,7 @@ public class HttpClientUtils {
             entity.setContentEncoding("UTF-8");
 
             client.addHeader("Authorization", token);
+            client.setTimeout(5000);
             client.post(null, postUrl, entity,
                     "application/json;charset=utf-8", responseHandler);
         } catch (Exception e) {

@@ -38,6 +38,7 @@ import com.shaba.app.global.Const;
 import com.shaba.app.overlay.SchemeDriveOverlay;
 import com.shaba.app.utils.SBLog;
 import com.shaba.app.utils.SchemeUtil;
+import com.shaba.app.utils.StringUtil;
 import com.shaba.app.utils.ToastUtil;
 import com.shaba.app.utils.ToastUtils;
 
@@ -303,6 +304,8 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
 
     @Override
     public void onClick(View v) {
+        if (StringUtil.isFastClick())
+            return;
         searchRouteResult(2, RouteSearch.DRIVING_SINGLE_DEFAULT);
     }
 

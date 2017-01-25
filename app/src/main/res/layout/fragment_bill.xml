@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner_year"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/padding_or_margin_10"
+            android:layout_weight="2"
+            android:background="@drawable/spinner_selector"
+            android:padding="@dimen/padding_or_margin_10"
+            android:textSize="@dimen/text_size_16" />
+
+        <Spinner
+            android:id="@+id/spinner_month"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/padding_or_margin_10"
+            android:layout_weight="2"
+            android:background="@drawable/spinner_selector"
+            android:padding="@dimen/padding_or_margin_10"
+            android:textSize="@dimen/text_size_16" />
+
+        <Button
+            android:id="@+id/btn_query"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/padding_or_margin_10"
+            android:layout_weight="1"
+            android:text="搜索"
+            android:textSize="@dimen/text_size_16" />
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/plv_billsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="#19000000"
+        android:dividerHeight="2dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+</LinearLayout>

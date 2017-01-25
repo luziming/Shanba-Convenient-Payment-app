@@ -17,6 +17,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.shaba.app.R;
 import com.shaba.app.fragment.base.BaseFragment;
 import com.shaba.app.global.ConstantUtil;
+import com.shaba.app.utils.StringUtil;
 import com.shaba.app.utils.ToastUtils;
 import com.shaba.app.view.CustomProgressDialog;
 import com.unionpay.UPPayAssistEx;
@@ -171,6 +172,8 @@ public class ElectricityDetailFragment extends BaseFragment implements View.OnCl
     @Override
     public void onClick(View v) {
         String amount = et_jfje.getText().toString().trim();
+        if (StringUtil.isFastClick())
+            return;
         if (TextUtils.isEmpty(amount)) {
             ToastUtils.showToast("缴费金额不能为空!");
             return;
@@ -218,7 +221,7 @@ public class ElectricityDetailFragment extends BaseFragment implements View.OnCl
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-                ToastUtils.showToast("" + R.string.error_wifi_disconnect);
+                ToastUtils.showToast(mActivity.getResources().getString(R.string.error_wifi_disconnect));
                 mLoadingDialog.dismiss();
                 mLoadingDialog = null;
             }
@@ -255,6 +258,7 @@ public class ElectricityDetailFragment extends BaseFragment implements View.OnCl
              ************************************************/
             Log.e("ElectricityDetailFragment", "TN号: " + tn);
             UPPayAssistEx.startPay(mActivity, null, null, tn, ConstantUtil.mMode);
+            getFragmentManager().popBackStack();
         }
     }
 }

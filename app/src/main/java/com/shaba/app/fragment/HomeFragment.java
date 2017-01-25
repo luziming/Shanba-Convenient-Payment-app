@@ -137,26 +137,26 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 type = "electricity";
                 break;
             case 1:
-                ToastUtils.showToast("宽带缴费");
+                type = "broadband-charge";
                 break;
             case 2:
                 type = "phone-charge";
                 break;
             case 3:
-                ToastUtils.showToast("固话缴费");
+                type = "tel-charge";
                 break;
             case 4:
-                ToastUtils.showToast("流量充值");
+                type = "flow-charge";
                 break;
             case 5:
-                ToastUtils.showToast("社保查询");
+                type = "social-security";
                 break;
             case 6:
                 ToastUtils.showToast("该功能即将上线!");
                 type = null;
                 break;
             case 7:
-                ToastUtils.showToast("社保装态");
+                type = "social-status";
                 break;
             case 8:
                 ToastUtils.showToast("暖气费");

@@ -105,4 +105,35 @@
         <item name="android:background">#e6e6e6</item>
     </style>
 
+    <!-- 选择运营商的RadioButton -->
+    <style name="rb_style">
+        <item name="android:padding">@dimen/padding_or_margin_10</item>
+        <item name="android:background">@drawable/tv_seletor</item>
+        <item name="android:textColor">@color/tv_color_seletor</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="login_edit_text">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/target_edittext_css</item>
+        <item name="android:ems">20</item>
+        <item name="android:minHeight">25dip</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:drawablePadding">8dip</item>
+        <item name="android:padding">6dip</item>
+    </style>
+
+    <style name="login_edit_text_focusable">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/edittext_selector</item>
+        <item name="android:ems">20</item>
+        <item name="android:minHeight">25dip</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:drawablePadding">8dip</item>
+        <item name="android:padding">6dip</item>
+    </style>
 </resources>

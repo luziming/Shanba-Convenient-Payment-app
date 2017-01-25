@@ -1,6 +1,7 @@
 package com.shaba.app.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Build;
@@ -20,17 +21,18 @@ import com.shaba.app.fragment.HomeFragment;
 import com.shaba.app.fragment.ReplacePhoneNumerFragment;
 import com.shaba.app.fragment.ResetPasswordFragment;
 import com.shaba.app.fragment.base.FragmentFactory;
+import com.shaba.app.utils.PrefUtils;
 import com.shaba.app.utils.ToastUtils;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
+import cn.carbs.android.library.MDDialog;
 
 public class MainActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    public Toolbar toolbar;
     @Bind(R.id.dl_left)
-    DrawerLayout mDrawerLayout;
+    public DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view)
     NavigationView navigation_view;
     @Bind(R.id.fl_container)
@@ -38,9 +40,10 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.ll_left)
     LinearLayout ll_left;
 
-    private ActionBarDrawerToggle mDrawerToggle;
+    public ActionBarDrawerToggle mDrawerToggle;
     private TextView toolbar_title;
     private long mExitTime;
+
     @Override
     protected int getLayoutID() {
         return R.layout.activity_main;
@@ -48,24 +51,29 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
+        boolean isFirst = PrefUtils.getBoolean(this, "isFirst", true);
+        if (isFirst)
+            firStLoginDialog();
         //初始化Toolbar
         initToolbar();
         //设置菜单列表
         setOnRightMenuClick();
 
-        EventBus.getDefault().register(this);
+
+//        EventBus.getDefault().register(this);
 //        6F:1E:F9:98:29:53:D3:8D:CF:B8:CF:2F:E7:12:01:4A:D3:7C:0F:0D
 
     }
 
     @Override
     protected void elseView() {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                //将侧边栏顶部延伸至status bar
-                mDrawerLayout.setFitsSystemWindows(true);
-                //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
-                mDrawerLayout.setClipToPadding(false);
-            }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            //将侧边栏顶部延伸至status bar
+            mDrawerLayout.setFitsSystemWindows(true);
+            //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
+            mDrawerLayout.setClipToPadding(false);
+        }
 
     }
 
@@ -99,7 +107,10 @@ public class MainActivity extends BaseActivity {
                         fragment = new ReplacePhoneNumerFragment();
                         break;
                     case R.id.exit:
-                        ToastUtils.showToast(item.getTitle() + "");
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
+                        finish();
                         break;
                 }
                 if (fragment != null) {
@@ -126,6 +137,10 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true); //设置返回键可用
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setBackEnable();
+    }
+
+    public void setBackEnable() {
         //创建返回键，并实现打开关/闭监听
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, 0, 0) {
             @Override
@@ -138,27 +153,45 @@ public class MainActivity extends BaseActivity {
                 super.onDrawerClosed(drawerView);
             }
         };
-
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    public void onEvent(String type) {
-
-    }
-
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(ll_left)) {
-            mDrawerLayout.closeDrawer(ll_left);
+        if (getFragmentManager().getBackStackEntryCount() != 0) {
+            super.onBackPressed();
         } else {
-            if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                ToastUtils.showToast("再按一次退出程序");
-                mExitTime = System.currentTimeMillis();
+            if (mDrawerLayout.isDrawerOpen(ll_left)) {
+                mDrawerLayout.closeDrawer(ll_left);
             } else {
-                super.onBackPressed();
+                if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                    ToastUtils.showToast("再按一次退出程序");
+                    mExitTime = System.currentTimeMillis();
+                } else {
+                    super.onBackPressed();
+                }
             }
-
         }
+    }
+
+    /**
+     * 首次登陆弹出对话框
+     */
+    protected void firStLoginDialog() {
+        new MDDialog.Builder(MainActivity.this)
+                .setContentView(R.layout.alertdialog_info)
+                .setPositiveButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PrefUtils.putBoolean(MainActivity.this, "isFirst", false);
+                    }
+                })
+                .setWidthMaxDp(600)
+                .setShowTitle(false)//default is true
+                .setShowNegativeButton(false)
+                .setShowPositiveButton(true)
+                .create()
+                .show();
     }
 }

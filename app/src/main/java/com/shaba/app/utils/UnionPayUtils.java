@@ -65,7 +65,7 @@ public class UnionPayUtils {
         UPPayAssistEx.startPay(context, null, null, tn, ConstantUtil.mMode);
     }
 
-    public void checkTN(String tn, Context context) {
+    public void checkTN(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("错误提示");
         builder.setMessage(R.string.error_wifi_disconnect);

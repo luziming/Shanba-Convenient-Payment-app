@@ -68,10 +68,8 @@ public class PhoneChargeAdapter extends BaseAdapter {
 
         ViewHolder holder;
         if (inflater == null) {
-            inflater = (LayoutInflater) activity
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.gridview_recharge_amount, null);
             holder = new ViewHolder();

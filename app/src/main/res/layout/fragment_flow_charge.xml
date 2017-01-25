@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_content_color"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_or_margin_15" >
+
+        <LinearLayout
+            android:id="@+id/ll_yunyingshang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_or_margin_8"
+                android:layout_marginTop="@dimen/padding_or_margin_8"
+                android:background="@color/white_content_color"
+                android:enabled="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="运营商"
+                android:textColor="@color/phone_recharge_text"
+                android:textSize="@dimen/text_size_16" />
+
+            <RadioGroup
+                android:id="@+id/rg_yys_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_or_margin_8"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/rb_type_yidong"
+                    style="@style/rb_style"
+                    android:text="移动" />
+
+                <RadioButton
+                    android:id="@+id/rb_type_liantong"
+                    android:layout_marginLeft="@dimen/padding_or_margin_8"
+                    android:layout_marginRight="@dimen/padding_or_margin_8"
+                    style="@style/rb_style"
+                    android:text="联通" />
+
+                <RadioButton
+                    android:id="@+id/rb_type_dianxin"
+                    style="@style/rb_style"
+                    android:text="电信" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_or_margin_8"
+            android:layout_marginTop="@dimen/padding_or_margin_8"
+            android:background="@color/white_content_color"
+            android:enabled="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="@string/phone_recharge_num"
+            android:textColor="@color/phone_recharge_text"
+            android:textSize="@dimen/text_size_16" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding_or_margin_15" >
+
+            <AutoCompleteTextView
+                android:id="@+id/recharge_tel_num"
+                style="@style/myAutoCompleteTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/target_input_bg"
+                android:digits="0123456789"
+                android:hint="@string/phone_num"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:lines="1"
+                android:maxLength="13"
+                android:padding="@dimen/padding_or_margin_12"
+                android:textColorHint="@color/phone_recharge_text"
+                android:textSize="@dimen/text_size_18" />
+
+            <requestFocus />
+
+            <TextView
+                android:id="@+id/constract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-40dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/get_constants"
+                android:focusable="false" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_or_margin_8"
+            android:layout_marginTop="@dimen/padding_or_margin_15"
+            android:background="@color/white_content_color"
+            android:enabled="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="@string/phone_choose_amount"
+            android:textColor="@color/phone_recharge_text"
+            android:textSize="@dimen/text_size_16" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_or_margin_8"
+            android:enabled="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <com.shaba.app.view.MyGridView
+                    android:id="@+id/recharge_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="@dimen/padding_or_margin_10"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="@dimen/padding_or_margin_10" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_or_margin_8"
+                    android:layout_marginTop="@dimen/padding_or_margin_15"
+                    android:background="@color/white_content_color"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="其他金额"
+                    android:textColor="@color/phone_recharge_text"
+                    android:textSize="@dimen/text_size_16" />
+
+                <EditText
+                    android:layout_marginTop="@dimen/padding_or_margin_8"
+                    android:id="@+id/et_other"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/target_input_bg"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:hint="请输入充值金额"
+                    android:padding="@dimen/padding_or_margin_12"
+                    android:textColorHint="@color/phone_recharge_text"
+                    android:textSize="@dimen/text_size_18" />
+                <Button
+                    android:id="@+id/elec_recharge_btn"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_18"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dip"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/padding_or_margin_50"
+                    android:background="@drawable/textview_shap_2"
+                    android:clickable="true"
+                    android:text="@string/elec_now_recharge_btn" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

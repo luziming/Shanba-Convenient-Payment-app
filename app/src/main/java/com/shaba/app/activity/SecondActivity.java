@@ -15,12 +15,19 @@ import com.shaba.app.R;
 import com.shaba.app.fragment.BankMapFragment;
 import com.shaba.app.fragment.ElectricityFragment;
 import com.shaba.app.fragment.FarmersPointMapFragment;
+import com.shaba.app.fragment.FlowChargeFragment;
+import com.shaba.app.fragment.ForgetPasswordFragment;
 import com.shaba.app.fragment.MoreNewsFragment;
 import com.shaba.app.fragment.NewsDetailFragment;
-import com.shaba.app.fragment.PhoneBillFragment;
+import com.shaba.app.fragment.PhoneChargeFragment;
+import com.shaba.app.fragment.RegistProtocolFragment;
+import com.shaba.app.fragment.SocialSecurityFragment;
+import com.shaba.app.fragment.SocialStatusFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Stack;
 
 import butterknife.Bind;
 import de.greenrobot.event.EventBus;
@@ -53,7 +60,10 @@ public class SecondActivity extends BaseActivity {
     Toolbar toolbar;
 
     private TextView toolbar_title;
+
     private String title = "陕坝缴费宝";
+
+    private Stack<String> titleStack = new Stack<>();
 
     @Override
     protected int getLayoutID() {
@@ -61,6 +71,7 @@ public class SecondActivity extends BaseActivity {
     }
 
     public void onEvent(String title) {
+        titleStack.push(title);
         checkTitleLength(title);
         AnimatorSet alphaSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.title_right_enter);
         alphaSet.setTarget(toolbar_title);
@@ -78,23 +89,54 @@ public class SecondActivity extends BaseActivity {
         String t = getIntent().getStringExtra("title");
         Fragment fragment = null;
         Bundle bundle = new Bundle();
-        switch(type){
+        switch (type) {
+            case "register":
+                title = "缴费宝协议";
+                fragment = new RegistProtocolFragment();
+                break;
+            case "forget":
+                title = "忘记密码";
+                fragment = new ForgetPasswordFragment();
+                break;
             case "electricity":
                 title = "电费查询";
                 fragment = new ElectricityFragment();
                 break;
             case "phone-charge":
                 title = "手机话费";
-                fragment = new PhoneBillFragment();
+                fragment = new PhoneChargeFragment();
+                bundle.putString("MODE", "phone");
+                break;
+            case "flow-charge":
+                title = "流量充值";
+                fragment = new FlowChargeFragment();
+                break;
+            case "broadband-charge":
+                title = "宽带缴费";
+                fragment = new PhoneChargeFragment();
+                bundle.putString("MODE", "broadband");
+                break;
+            case "tel-charge":
+                title = "固话缴费";
+                fragment = new PhoneChargeFragment();
+                bundle.putString("MODE", "tel");
+                break;
+            case "social-security":
+                title = "社保查询";
+                fragment = new SocialSecurityFragment();
+                break;
+            case "social-status":
+                title = "社保状态";
+                fragment = new SocialStatusFragment();
                 break;
             case "bank-map":
                 title = "网点地图";
-                bundle.putInt("MAP_TYPE",1);
+                bundle.putInt("MAP_TYPE", 1);
                 fragment = new BankMapFragment();
                 break;
             case "atm-map":
                 title = "ATM地图";
-                bundle.putInt("MAP_TYPE",2);
+                bundle.putInt("MAP_TYPE", 2);
                 fragment = new BankMapFragment();
                 break;
             case "farmers-point-map":
@@ -103,7 +145,7 @@ public class SecondActivity extends BaseActivity {
                 break;
             case "news-detail": //新闻内容
                 title = t;
-                bundle.putString("url",getIntent().getStringExtra("url"));
+                bundle.putString("url", getIntent().getStringExtra("url"));
                 fragment = new NewsDetailFragment();
                 break;
             case "more-news":
@@ -113,10 +155,12 @@ public class SecondActivity extends BaseActivity {
         }
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
-                .replace(R.id.fl_container_content,fragment)
+                .replace(R.id.fl_container_content, fragment, title)
                 .commit();
         //初始化Toolbar
         initToolbar();
+
+        titleStack.push(title);
     }
 
     private void initToolbar() {
@@ -130,20 +174,21 @@ public class SecondActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
-            return true ;
+            return true;
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (getFragmentManager().getBackStackEntryCount() == 0) {
-            checkTitleLength(title);
+        if (titleStack.size() > 1 && !titleStack.empty() && getFragmentManager().getBackStackEntryCount() != 0) {
+            titleStack.pop();
+            toolbar_title.setText(titleStack.peek());
         }
-        overridePendingTransition(R.anim.activity_enter,R.anim.activity_exit);
+        super.onBackPressed();
+        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
     }
 
     @Override
@@ -159,6 +204,12 @@ public class SecondActivity extends BaseActivity {
          * 步骤3：处理银联手机支付控件返回的支付结果
          ************************************************/
         if (data == null) {
+            return;
+        }
+        if (requestCode == 1) {
+            //选择联系人
+            Fragment fragment = getFragmentManager().findFragmentByTag(title);
+            fragment.onActivityResult(requestCode, resultCode, data);
             return;
         }
 
@@ -201,7 +252,7 @@ public class SecondActivity extends BaseActivity {
         } else if (str.equalsIgnoreCase("cancel")) {
             msg = "用户取消了支付";
         }
-        onBackPressed();
+//        onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("支付结果通知");
         builder.setMessage(msg);
@@ -213,7 +264,7 @@ public class SecondActivity extends BaseActivity {
                 dialog.dismiss();
             }
         });
-        builder.create().show();
+        builder.show();
     }
 
     private boolean verify(String msg, String sign64, String mode) {

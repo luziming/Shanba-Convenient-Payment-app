@@ -2,7 +2,9 @@ package com.shaba.app.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.shaba.app.R;
@@ -19,6 +22,8 @@ import com.shaba.app.activity.LoginActivity;
 import com.shaba.app.been.PaymentCompany;
 import com.shaba.app.fragment.base.BaseFragment;
 import com.shaba.app.fragment.base.FragmentUtils;
+import com.shaba.app.utils.CommonTools;
+import com.shaba.app.utils.StringUtil;
 import com.shaba.app.utils.ToastUtils;
 import com.shaba.app.view.CustomProgressDialog;
 
@@ -32,6 +37,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.carbs.android.library.MDDialog;
 
 /*
                    _ooOoo_
@@ -107,6 +113,45 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
 
             }
         });
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                //此处的时间应与开启Activity的动画时间同步
+                SystemClock.sleep(400);
+                CommonTools.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog();
+                    }
+                });
+            }
+        }.start();
+    }
+
+    private void dialog() {
+        new MDDialog.Builder(mActivity)
+                .setContentView(R.layout.alertdialog_info)
+                .setContentViewOperator(new MDDialog.ContentViewOperator() {
+                    @Override
+                    public void operate(View contentView) {//这里的contentView就是上面代码中传入的自定义的View或者layout资源inflate出来的view
+                        TextView message = (TextView) contentView.findViewById(R.id.tv_dialog_message);
+                        message.setGravity(Gravity.LEFT);
+                        message.setText(getResources().getString(R.string.alert_elec));
+                        message.setFocusable(false);
+                    }
+                })
+                .setPositiveButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                })
+                .setShowTitle(false)
+                .setShowPositiveButton(true)
+                .setShowNegativeButton(false)
+                .setWidthMaxDp(600)
+                .create()
+                .show();
     }
 
     @Override
@@ -124,6 +169,8 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        if (StringUtil.isFastClick())
+            return;
         switch (v.getId()) {
             case R.id.electricity_next:
                 code = ccavElectricityCode.getText().toString().trim();
@@ -156,8 +203,9 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
                     if (!response.isNull("error")) {
                         if ("noauth".equals(response.getString("error"))) {
                             ToastUtils.showToast("登陆已失效,请重新登陆");
-                            Intent intent = new Intent(mActivity, LoginActivity.class);
-                            startActivity(intent);
+                            startActivity(new Intent(mActivity, LoginActivity.class));
+                            mActivity.overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
+                            mActivity.finish();
                             return;
                         }
                     }

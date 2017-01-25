@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.tencent.bugly.Bugly;
+
 /*
                    _ooOoo_
                   o8888888o
@@ -38,5 +40,7 @@ public class MyApplication extends Application {
         if (context == null) {
             context = this;
         }
+
+        Bugly.init(getApplicationContext(), "注册时申请的APPID", false);
     }
 }
