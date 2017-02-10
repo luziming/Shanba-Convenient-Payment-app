@@ -23,6 +23,7 @@ import com.shaba.app.fragment.ResetPasswordFragment;
 import com.shaba.app.fragment.base.FragmentFactory;
 import com.shaba.app.utils.PrefUtils;
 import com.shaba.app.utils.ToastUtils;
+import com.tencent.bugly.Bugly;
 
 import butterknife.Bind;
 import cn.carbs.android.library.MDDialog;
@@ -51,7 +52,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        //bugly自动更新
+        Bugly.init(getApplicationContext(), "999e8dfed4", false);
 
+        String usernmae = PrefUtils.getString(this, "username", "未登录");
+        View headerView = navigation_view.getHeaderView(0);
+        TextView tv_username = (TextView) headerView.findViewById(R.id.tv_statu_username);
+        tv_username.setText(usernmae);
         boolean isFirst = PrefUtils.getBoolean(this, "isFirst", true);
         if (isFirst)
             firStLoginDialog();
@@ -59,11 +66,8 @@ public class MainActivity extends BaseActivity {
         initToolbar();
         //设置菜单列表
         setOnRightMenuClick();
-
-
 //        EventBus.getDefault().register(this);
 //        6F:1E:F9:98:29:53:D3:8D:CF:B8:CF:2F:E7:12:01:4A:D3:7C:0F:0D
-
     }
 
     @Override
@@ -74,7 +78,6 @@ public class MainActivity extends BaseActivity {
             //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
             mDrawerLayout.setClipToPadding(false);
         }
-
     }
 
 

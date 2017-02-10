@@ -371,4 +371,37 @@ public class AppUtil {
         HttpClientUtils.getJsonForToken("http://115.28.138.217:3000/api/check-login", params, responseHandler, token);
     }
 
+    /**
+     * 全行业缴费分类查询
+     */
+    public void selectFromType(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
+        HttpClientUtils.getJsonForToken("http://115.28.138.217:3000/api/merchant/select-products",params,responseHandler,token);
+    }
+
+    /**
+     * 全行业缴费项目用户查询
+     */
+    public void selectUserFromProduct(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
+        HttpClientUtils.getJsonForToken("http://115.28.138.217:3000/api/merchant/participants",params,responseHandler,token);
+    }
+    /**
+     * 全行业缴费搜索项目
+     */
+    public void searchProduct(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
+        HttpClientUtils.getJsonForToken("http://115.28.138.217:3000/api/merchant/find-products",params,responseHandler,token);
+    }
+
+    /**
+     * 全行业缴费获取tn
+     */
+    public void getIndustryTN(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
+        HttpClientUtils.getJsonForToken("http://test.aduut.com:8088/api/merchant/pay",params,responseHandler,token);
+    }
+    /**
+     * 全行业缴费缴费记录
+     */
+    public void getPaymentRecord(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
+        HttpClientUtils.getJsonForToken("http://test.aduut.com:8088/api/merchant/trades",params,responseHandler,token);
+    }
+
 }

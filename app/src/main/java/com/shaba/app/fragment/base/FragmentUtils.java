@@ -72,4 +72,23 @@ public class FragmentUtils {
                 .add(content, fragment, tag)
                 .addToBackStack(null).commit();
     }
+
+    /**
+     * 开启Fragment
+     */
+    public static void startNormalFragment(Activity activity, Fragment fragment, int content) {
+        activity.getFragmentManager()
+                .beginTransaction()
+                .replace(content,fragment)
+                .addToBackStack(null).commit();
+    }
+    /**
+     * 开启Fragment
+     */
+    public static void startNormalFragment(Activity activity, Fragment fragment, int content,String tag) {
+        activity.getFragmentManager()
+                .beginTransaction()
+                .replace(content,fragment,tag)
+                .addToBackStack(null).commit();
+    }
 }

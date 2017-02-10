@@ -14,6 +14,7 @@ import com.shaba.app.been.MapListEntity;
 import com.shaba.app.fragment.base.BaseLoadingFragment;
 import com.shaba.app.fragment.base.FragmentUtils;
 import com.shaba.app.utils.GsonTools;
+import com.shaba.app.utils.PermissionUtils;
 import com.shaba.app.utils.StringUtil;
 
 import org.apache.http.Header;
@@ -61,8 +62,16 @@ public class BankMapFragment extends BaseLoadingFragment implements AdapterView.
         View view = inflater.inflate(R.layout.fragment_bank_map, null);
         ButterKnife.bind(this, view);
         lvBankMap.setOnItemClickListener(this);
+        PermissionUtils.requestMultiPermissions(mActivity, mPermissionGrant);
+
         return view;
     }
+    private PermissionUtils.PermissionGrant mPermissionGrant = new PermissionUtils.PermissionGrant() {
+        @Override
+        public void onPermissionGranted(int requestCode) {
+
+        }
+    };
 
     @Override
     public void requestData() {

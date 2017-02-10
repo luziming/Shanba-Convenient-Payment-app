@@ -9,7 +9,7 @@
     <color name="Indigo_nav_color">#4675FF</color>
 
     <color name="text_default">#de000000</color>
-    <color name="fragment_bg">#FAFAFA</color>
+    <color name="fragment_bg">#F3F5F7</color>
     <color name="background_user">#F2F2F2</color><!--主色 按住蓝 -->
     <color name="black_user">#333333</color><!--主色  -->
     <color name="gray_dark">#999999</color>

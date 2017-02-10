@@ -41,7 +41,7 @@ public class SplashActivity extends BaseActivity {
             new Thread(){
                 @Override
                 public void run() {
-                    SystemClock.sleep(2000);
+                    SystemClock.sleep(1500);
                     mainUI();
                 }
             }.start();
@@ -60,7 +60,7 @@ public class SplashActivity extends BaseActivity {
                     new Thread(){
                         @Override
                         public void run() {
-                            SystemClock.sleep(2000);
+                            SystemClock.sleep(1500);
                             CommonTools.runOnUIThread(new Runnable() {
                                 @Override
                                 public void run() {

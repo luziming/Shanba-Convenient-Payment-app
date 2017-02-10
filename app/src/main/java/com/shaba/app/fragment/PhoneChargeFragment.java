@@ -310,7 +310,8 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
             if (response != null) {
                 try {
                     UnionPayUtils.getInstance().disMissDialog();
-                    if (!response.getBoolean("sucess")) {
+                    Log.e("PhoneChargeResponseHandler", "Response: " + response.toString());
+                    if (!response.getBoolean("success")) {
                         if (!response.isNull("error")) {
                             if ("noauth".equals(response.getString("error"))) {
                                 ToastUtils.showToast(mActivity.getResources().getString(R.string.re_login));
@@ -330,6 +331,7 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                     }
                     if (response.getBoolean("success")) {
                         String tn = response.getJSONObject("obj").getString("tn");
+                        Log.e("PhoneChargeResponseHandler", ": TN" + tn);
                         if (TextUtils.isEmpty(tn)) {
                             UnionPayUtils.getInstance().checkTN(mActivity);
                             return;

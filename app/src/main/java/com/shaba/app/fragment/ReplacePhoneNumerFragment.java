@@ -137,7 +137,7 @@ public class ReplacePhoneNumerFragment extends BaseFragment implements View.OnCl
                     ToastUtils.showToast("请输入正确的手机号");
                     return;
                 }
-                Map<Object, Object> params = new HashMap<Object, Object>();
+                Map<Object, Object> params = new HashMap<>();
                 params.put("mobile", phone);
                 params.put("type", ConstantUtil.SEND_SMS_REGIST);
                 appUtil.getSMS(params, new MyResponseHandler());
@@ -206,7 +206,6 @@ public class ReplacePhoneNumerFragment extends BaseFragment implements View.OnCl
             try {
                 boolean pass = response.getBoolean("success");
                 if (pass) {
-                    ToastUtil.show(context, "验证码正确");
                     // intent = s Intent(context, PassWordActivity.class);
                     // // 验证码对比
                     // intent.putExtra("phone_number", strPhone);
@@ -237,12 +236,12 @@ public class ReplacePhoneNumerFragment extends BaseFragment implements View.OnCl
 
         @Override
         public void onFinish() {
+
         }
     }
 
     /**
      * 处理用户切换
-     *
      * @author admin
      */
     class ChangeUserHandler extends JsonHttpResponseHandler {

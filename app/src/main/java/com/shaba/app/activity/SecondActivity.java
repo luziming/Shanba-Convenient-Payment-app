@@ -71,6 +71,7 @@ public class SecondActivity extends BaseActivity {
     }
 
     public void onEvent(String title) {
+        //将标题加入栈中
         titleStack.push(title);
         checkTitleLength(title);
         AnimatorSet alphaSet = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.title_right_enter);
@@ -151,6 +152,10 @@ public class SecondActivity extends BaseActivity {
             case "more-news":
                 title = "更多新闻";
                 fragment = new MoreNewsFragment();
+                break;
+            case "industry-payment":
+                title = "全行业缴费";
+//                fragment = new IndustryPayment();
                 break;
         }
         fragment.setArguments(bundle);

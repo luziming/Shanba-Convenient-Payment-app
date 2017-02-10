@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shaba.app.R;
+import com.shaba.app.activity.IndustryPaymentActivity;
 import com.shaba.app.activity.SecondActivity;
 import com.shaba.app.adapter.MenuRecycleAdapter;
 import com.shaba.app.been.NewsListEntity;
@@ -180,7 +181,9 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 ToastUtils.showToast("加油卡充值");
                 break;
             case 15:
-                ToastUtils.showToast("全行业缴费");
+//                type = "industry-payment";
+                Intent intent = new Intent(mActivity, IndustryPaymentActivity.class);
+                lanuchActivity(intent);
                 break;
         }
         if (!TextUtils.isEmpty(type)){
@@ -292,6 +295,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 if (homeBannerOk && newsBannerOk) {
                     Zz();
                     //scrollView滑动到顶部
+                    if (scrollView != null)
                     scrollView.fullScroll(ScrollView.FOCUS_UP);
                 }
             } catch (JSONException e) {

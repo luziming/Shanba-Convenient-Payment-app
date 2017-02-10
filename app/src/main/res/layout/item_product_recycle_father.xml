@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/fragment_bg"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/padding_or_margin_10"
+        android:padding="@dimen/padding_or_margin_12"
+        android:layout_marginRight="@dimen/padding_or_margin_8"
+        android:layout_marginLeft="@dimen/padding_or_margin_8"
+        android:background="@drawable/tv_search_shape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/iv_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_red"/>
+
+        <TextView
+            android:layout_marginLeft="@dimen/padding_or_margin_8"
+            android:layout_toRightOf="@+id/iv_point"
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/text_default"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:text="黄赌毒"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</LinearLayout>

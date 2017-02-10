@@ -254,7 +254,6 @@ public class RecordFragment extends BaseFragment implements View.OnClickListener
 
     /**
      * 初始化Spinner
-     *
      * @param list
      */
     private void initSpinner(List<String> list, Spinner spinner) {

@@ -182,7 +182,7 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
                 dialog.setMessage("正在查询数据,请等待...");
                 dialog.setCancelable(false);
                 dialog.show();
-                Map<Object, Object> map = new HashMap<Object, Object>();
+                Map<Object, Object> map = new HashMap<>();
                 map.put("usr_num", code);
                 appUtil.queryBillElec(map, token, new MyResponseHandler(), companyID + "");
             case R.id.ccav_electricity_code:

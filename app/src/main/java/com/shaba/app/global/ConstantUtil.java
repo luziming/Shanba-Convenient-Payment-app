@@ -41,7 +41,7 @@ public interface ConstantUtil {
     // 人民币单位
     String RMB = "元";
     // 中国货币标识
-    public static final String CHINA_RMB = "￥";
+    String CHINA_RMB = "￥";
 
     int SHANBA_ORG_CODE  = 1;
     /**

@@ -70,7 +70,8 @@ import butterknife.ButterKnife;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener, View.OnClickListener, RouteSearch.OnRouteSearchListener {
+public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener,
+        View.OnClickListener, RouteSearch.OnRouteSearchListener {
 
     @Bind(R.id.map)
     MapView map;
@@ -115,15 +116,19 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         return view;
     }
 
+
+
+
     public void initAmap() {
+
         //初始化地图控制器对象
         if (aMap == null) {
             aMap = map.getMap();
         }
         // 自定义系统定位小蓝点
         MyLocationStyle myLocationStyle = new MyLocationStyle();
-        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-                .fromResource(R.drawable.image_emoticon25));// 设置小蓝点的图标
+//        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+//                .fromResource(R.drawable.huaji));// 设置小蓝点的图标
         myLocationStyle.strokeColor(Color.TRANSPARENT);// 设置圆形的边框颜色
         myLocationStyle.radiusFillColor(Color.TRANSPARENT);// 设置圆形的填充颜色
 // myLocationStyle.anchor(int,int)//设置小蓝点的锚点
@@ -149,6 +154,7 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         mRouteSearch = new RouteSearch(mActivity);
         mRouteSearch.setRouteSearchListener(this);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -270,7 +276,7 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
 
                 mStartPoint = new LatLonPoint(geoLat, geoLng);
                 SBLog.d(mStartPoint.toString());
-                latlng = new LatLng(geoLat,geoLng);
+                latlng = new LatLng(geoLat, geoLng);
                 if (isFirst) {
                     LatLngBounds bounds = new LatLngBounds.Builder()
                             .include(addressLngLat).include(latlng).build();
@@ -357,7 +363,7 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
                     int dis = (int) drivePath.getDistance();
                     int dur = (int) drivePath.getDuration();
                     String des = SchemeUtil.getBusRouteTitle(dur, dis);
-                    Toast.makeText(mActivity,des,Toast.LENGTH_LONG).show();
+                    Toast.makeText(mActivity, des, Toast.LENGTH_LONG).show();
 //                    mRotueTimeDes.setText(des);
                     int taxiCost = (int) mDriveRouteResult.getTaxiCost();
                     /*SpannableStringBuilder spanabledes = SchemeUtil

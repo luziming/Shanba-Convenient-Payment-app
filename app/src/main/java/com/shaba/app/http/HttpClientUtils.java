@@ -44,7 +44,6 @@ public class HttpClientUtils {
     public static void getJson(String postUrl, RequestParams params,
                                AsyncHttpResponseHandler responseHandler) {
         client.get(postUrl, params, responseHandler);
-
     }
 
     public static void getJsonForToken(String postUrl, RequestParams params,
@@ -62,7 +61,6 @@ public class HttpClientUtils {
             entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,
                     "application/json"));
             entity.setContentEncoding("UTF-8");
-
             client.addHeader("Authorization", token);
             client.setTimeout(5000);
             client.post(null, postUrl, entity,

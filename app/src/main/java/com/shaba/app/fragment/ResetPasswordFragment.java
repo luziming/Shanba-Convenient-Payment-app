@@ -132,7 +132,7 @@ public class ResetPasswordFragment extends BaseFragment implements View.OnClickL
         Map<Object, Object> p = new HashMap<>();
         p.put("current-password", oldPassword);
         p.put("password", newPassword);
-        p.put("password-confirm", repeatpwd);
+        p.put("password-confirm", repeatPassword);
         appUtil.getUpdataPwd(p, new MyChangeData(),token);
         UnionPayUtils.getInstance().showDialog(mActivity);
     }

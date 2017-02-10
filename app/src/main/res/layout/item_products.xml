@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/fragment_bg"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/padding_or_margin_10"
+        android:padding="@dimen/padding_or_margin_12"
+        android:layout_marginRight="@dimen/padding_or_margin_8"
+        android:layout_marginLeft="@dimen/padding_or_margin_8"
+        android:background="@drawable/tv_search_shape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_products_name"
+                android:layout_width="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/text_default"
+                android:textSize="16sp"
+                android:text="中南海"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_payment_name"
+                android:textColor="@color/text_default"
+                android:layout_marginTop="@dimen/padding_or_margin_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="2017全国人民代表大会"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_right"/>
+    </LinearLayout>
+
+</LinearLayout>
