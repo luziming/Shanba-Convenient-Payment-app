@@ -30,6 +30,15 @@ public class PersonEntity implements MultiItemEntity{
     private String amount;
     private String mer_name;
     private String name;
+    private String user_code;
+
+    public String getUser_code() {
+        return user_code;
+    }
+
+    public void setUser_code(String user_code) {
+        this.user_code = user_code;
+    }
 
     public String getName() {
         return name;

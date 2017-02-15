@@ -138,7 +138,8 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 type = "electricity";
                 break;
             case 1:
-                type = "broadband-charge";
+                Intent intent = new Intent(mActivity, IndustryPaymentActivity.class);
+                lanuchActivity(intent);
                 break;
             case 2:
                 type = "phone-charge";
@@ -160,30 +161,29 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 type = "social-status";
                 break;
             case 8:
-                ToastUtils.showToast("暖气费");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 9:
-                ToastUtils.showToast("公积金查询");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 10:
-                ToastUtils.showToast("天然气");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 11:
-                ToastUtils.showToast("快递查询");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 12:
-                ToastUtils.showToast("火车票");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 13:
-                ToastUtils.showToast("违章查询");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 14:
-                ToastUtils.showToast("加油卡充值");
+                ToastUtils.showToast("该功能即将上线");
                 break;
             case 15:
+                type = "broadband-charge";
 //                type = "industry-payment";
-                Intent intent = new Intent(mActivity, IndustryPaymentActivity.class);
-                lanuchActivity(intent);
                 break;
         }
         if (!TextUtils.isEmpty(type)){

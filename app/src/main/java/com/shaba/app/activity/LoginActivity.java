@@ -109,7 +109,7 @@ public class LoginActivity extends BaseActivity {
                     String token = response.getString("token");
                     PrefUtils.putString(LoginActivity.this, "token", token);
                     PrefUtils.putString(LoginActivity.this, "username", phoneNumber);
-                    SBLog.json("TOKEN", token);
+                    SBLog.d(token);
                     bt_login.setText("登陆");
                     bt_login.setClickable(true);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));

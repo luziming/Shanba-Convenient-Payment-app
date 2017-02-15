@@ -180,6 +180,7 @@ public class ProductsUserFragment extends BaseLoadingFragment implements SwipeRe
             personEntity.setAmount(bean.getAmount() + "");
             personEntity.setStatus(bean.getStatus());
             personEntity.setName(bean.getName());
+            personEntity.setUser_code(bean.getUser_code());
             fatherEntity.addSubItem(personEntity);
             res.add(fatherEntity);
         }
@@ -201,6 +202,7 @@ public class ProductsUserFragment extends BaseLoadingFragment implements SwipeRe
         public void onSuccess(int i, Header[] headers, byte[] bytes) {
             try {
                 JSONObject obj = new JSONObject(new String(bytes));
+                SBLog.json("INFO",new String(bytes));
                 if (obj.getBoolean("success")) {
                     UserEntity userEntity = new Gson().fromJson(obj.getJSONObject("data").toString(), UserEntity.class);
                     //首次仅此以及下拉刷新

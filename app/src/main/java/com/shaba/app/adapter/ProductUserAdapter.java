@@ -71,6 +71,7 @@ public class ProductUserAdapter extends BaseMultiItemQuickAdapter<MultiItemEntit
                         .setText(R.id.tv_product_company, lv1.getMer_name())
                         .setText(R.id.tv_product_status, lv1.getStatus() == 2 ? "已缴费":"未缴费")
                         .setText(R.id.tv_product_else, lv1.getName())
+                        .setText(R.id.tv_product_code,lv1.getUser_code())
                         .setVisible(R.id.rl_buttons,lv1.getStatus() ==2 ? false : true)
                         .addOnClickListener(R.id.bt_payment);
                 break;

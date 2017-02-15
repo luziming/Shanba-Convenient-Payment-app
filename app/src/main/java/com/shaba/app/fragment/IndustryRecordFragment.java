@@ -63,7 +63,6 @@ public class IndustryRecordFragment extends BaseLoadingFragment implements Swipe
     SwipeRefreshLayout swipeRefresh;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    private String token1 = "Token eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiMTNlNTk5NDktM2NmYi00OTc0LTk5YjktYzc0ZjY4ZDZmZGViIiwib3JnIjoxLCJ1dWlkIjoiZTYwMTQyYzItZDRmYy00NTU5LTgyNTUtMDFiNjk5NTQyMWQwIiwiZXhwIjoxNDg3MjA5NTE4fQ.rzruj4XZwBbv7Y8HKICjL_4IH1IOeB7CgV437X-4-Js6VOL61t4Y0C8CXiTJr8P6RSxqROsFB8eEHuruQYzAWg";
     private int current_page;
     private int total;
     private boolean isPullToDown = true;
@@ -117,7 +116,7 @@ public class IndustryRecordFragment extends BaseLoadingFragment implements Swipe
     private void getMoreRecord(int countPage) {
         RequestParams params = new RequestParams();
         params.put("current_page", countPage);
-        appUtil.getPaymentRecord(new RecordResponseHandler(), params, token1);
+        appUtil.getPaymentRecord(new RecordResponseHandler(), params, token);
     }
     private class RecordResponseHandler extends AsyncHttpResponseHandler{
 

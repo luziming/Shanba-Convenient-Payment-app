@@ -395,13 +395,13 @@ public class AppUtil {
      * 全行业缴费获取tn
      */
     public void getIndustryTN(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
-        HttpClientUtils.getJsonForToken("http://test.aduut.com:8088/api/merchant/pay",params,responseHandler,token);
+        HttpClientUtils.getJsonForToken("http://115.28.138.217:3000/api/merchant/pay",params,responseHandler,token);
     }
     /**
      * 全行业缴费缴费记录
      */
     public void getPaymentRecord(AsyncHttpResponseHandler responseHandler, RequestParams params,String token) {
-        HttpClientUtils.getJsonForToken("http://test.aduut.com:8088/api/merchant/trades",params,responseHandler,token);
+        HttpClientUtils.getJsonForToken("http://115.28.138.217:3000/api/merchant/trades",params,responseHandler,token);
     }
 
 }

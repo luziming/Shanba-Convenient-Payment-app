@@ -121,7 +121,6 @@
                 android:layout_toRightOf="@+id/view2"
                 android:background="@drawable/transparent"
                 android:ems="18"
-                android:text="123123"
                 android:hint="请输入密码"
                 android:inputType="textPassword"
                 android:padding="1dp"

@@ -1,24 +1,33 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'shanba'
+            keyPassword 'nimazhabu'
+            storeFile file('C:/Users/pc/Desktop/陕坝缴费上线资料/shanba.keystore')
+            storePassword 'nimazhabu'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "com.shaba.app"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 2
-        versionName "1.1"
+        versionCode 14
+        versionName "1.11"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的SO库架构
-            abiFilters 'armeabi'  ,'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi' //,'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -42,5 +51,4 @@ dependencies {
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
     compile 'com.zhy:flowlayout-lib:1.0.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
-    compile project(':IndicatorLibrary')
 }

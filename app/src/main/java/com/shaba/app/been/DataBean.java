@@ -45,7 +45,7 @@ public class DataBean implements Parcelable{
      * created_at : 2017-02-04T16:38:46.000Z
      */
 
-    private int amount;
+    private String amount;
     private int product_id;
     private String name;
     private int org_id;
@@ -62,7 +62,7 @@ public class DataBean implements Parcelable{
     private String created_at;
 
     protected DataBean(Parcel in) {
-        amount = in.readInt();
+        amount = in.readString();
         product_id = in.readInt();
         name = in.readString();
         org_id = in.readInt();
@@ -90,11 +90,11 @@ public class DataBean implements Parcelable{
         }
     };
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -217,7 +217,7 @@ public class DataBean implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(amount);
+        dest.writeString(amount);
         dest.writeInt(product_id);
         dest.writeString(name);
         dest.writeInt(org_id);

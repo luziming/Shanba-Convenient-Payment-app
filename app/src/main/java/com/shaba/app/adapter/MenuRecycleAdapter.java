@@ -38,7 +38,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuAdapterHolder> 
 
     int imgs[] = {
             R.drawable.icon_menu1,
-            R.drawable.icon_menu2,
+            R.drawable.icon_menu16,
             R.drawable.icon_menu5,
             R.drawable.icon_menu6,
             R.drawable.icon_menu7,
@@ -52,10 +52,10 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuAdapterHolder> 
             R.drawable.icon_menu11,
             R.drawable.icon_menu15,
             R.drawable.icon_menu12,
-            R.drawable.icon_menu16};
+            R.drawable.icon_menu2};
 
-    String imgs_str[] = new String[]{"电费", "宽带缴费", "手机话费", "固话缴费", "流量充值", "社保查询", "有线电视", "社保状态",
-            "暖气费","公积金查询","天然气","快递查询","火车票","违章查询","加油卡充值","全行业缴费"};
+    String imgs_str[] = new String[]{"电费", "全行业缴费", "手机话费", "固话缴费", "流量充值", "社保查询", "有线电视", "社保状态",
+            "暖气费","公积金查询","天然气","快递查询","火车票","违章查询","加油卡充值","宽带缴费"};
 
     private OnItemClickListener mOnItemClickListener;
 

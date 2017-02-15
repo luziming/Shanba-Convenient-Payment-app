@@ -118,17 +118,16 @@ public class ForgetSetPasswordFragment extends BaseFragment implements View.OnCl
         }
 
         Map<Object, Object> params = new HashMap<Object, Object>();
-        params.put("user_name", phone_number);
+        params.put("username", phone_number);
         params.put("password", once);
-        params.put("password_confirm", twice);
+        params.put("password-confirm", twice);
         params.put("code", static_code);
         appUtil.findPassword(params, new MyResponseHandler());
         UnionPayUtils.getInstance().showDialog(mActivity);
     }
 
     /**
-     * @author zhangxu
-     *         获取注册结果
+     *  获取注册结果
      */
     private class MyResponseHandler extends JsonHttpResponseHandler {
 
