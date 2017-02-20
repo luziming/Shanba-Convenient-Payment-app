@@ -17,7 +17,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.shaba.app.R;
 import com.shaba.app.adapter.ProductsRecycleAdapter;
-import com.shaba.app.been.DataBean;
+import com.shaba.app.been.ProductsEntity.DataBean;
 import com.shaba.app.been.ProductsEntity;
 import com.shaba.app.fragment.base.BaseLoadingFragment;
 import com.shaba.app.fragment.base.FragmentUtils;
@@ -75,6 +75,8 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
     private int total;
     private ProductsRecycleAdapter adapter;
     private boolean isPullToDown = true;
+    private List<DataBean> dataBeen;
+
 
     @Override
     public View initFragment() {
@@ -87,8 +89,8 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ProductsUserFragment fragment = new ProductsUserFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("id",mDatas.get(position).getId() + "");
-                bundle.putInt("type",1);
+                bundle.putInt("type_id",type_id);
+                bundle.putString("name",dataBeen.get(position).getName());
                 fragment.setArguments(bundle);
                 FragmentUtils.startCoolFragment(mActivity, fragment, R.id.fl_container_industry,"industry_payment");
             }
@@ -119,12 +121,12 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
                 JSONObject obj = new JSONObject(new String(bytes));
                 SBLog.json("obj", new String(bytes));
                 if (obj.getBoolean("success")) {
-                    ProductsEntity products = new Gson().fromJson(obj.getJSONObject("data").toString(), ProductsEntity.class);
+                    ProductsEntity products =  new Gson().fromJson(obj.getJSONObject("data").toString(), ProductsEntity.class);
                     //首次仅此以及下拉刷新
                     if (products != null && isPullToDown) {
                         current_page = products.getCurrent_page();
                         total = products.getTotal();
-                        List<DataBean> dataBeen = products.getData();
+                        dataBeen = products.getData();
                         if (dataBeen != null && dataBeen.size() > 0) {
                             if (mDatas.size() > 0) {
                                 mDatas.clear();
@@ -137,7 +139,7 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
                             //是否执行一次
                             adapter.isFirstOnly(false);
                             //设置空布局
-                            // adapter.setEmptyView(inflater.inflate(R.layout.recycle_empty_view,null));
+                            adapter.setEmptyView(inflater.inflate(R.layout.recycle_empty_view, null));
                             //自定义加载更多布局
                             adapter.setLoadMoreView(new CustomLoadMoreView());
                             //设置加载更多
@@ -171,8 +173,6 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
                             recyclerView.setLayoutManager(layoutManager);
                             recyclerView.setNestedScrollingEnabled(false);
                             recyclerView.setAdapter(adapter);
-//            Zz();
-                            loadingPager.showSuccessView();
                         }
                         //如果正在下拉刷新
                         if (refreshLayout.isRefreshing()) {
@@ -184,7 +184,6 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
                                 }
                             }, 1000);
                         }
-
                     } else {//上拉加载成功
                         mDatas.addAll(products.getData());
                         adapter.addData(products.getData());
@@ -192,7 +191,10 @@ public class ProductsFragment extends BaseLoadingFragment implements SwipeRefres
                             adapter.loadMoreComplete();
                         }
                     }
+                } else {
+                    loadingPager.showErrorView();
                 }
+                loadingPager.showSuccessView();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -110,7 +110,7 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
                     ToastUtils.showToast("请输入正确的手机号");
                     return;
                 }
-                Map<Object, Object> params = new HashMap<Object, Object>();
+                Map<Object, Object> params = new HashMap<>();
                 params.put("mobile", phone);
                 params.put("type", ConstantUtil.SEND_SMS_REGIST);
                 appUtil.getSMS(params, new MyResponseHandler());

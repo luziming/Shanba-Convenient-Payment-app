@@ -41,7 +41,7 @@ public class IndustryRecordAdapter extends BaseQuickAdapter<IndustryRecordEntity
         helper.setText(R.id.tv_record_name, item.getUser_name())
                 .
 
-                        setText(R.id.tv_record_amount, "- " + item.getAmount()
+                        setText(R.id.tv_record_amount, "+ " + item.getAmount()
 
                         )
                 .

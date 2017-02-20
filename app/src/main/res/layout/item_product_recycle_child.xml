@@ -43,27 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="金额"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/tv_product_amount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="哈哈哈" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_or_margin_12">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="用户号"
+                android:text="身份证号码"
                 android:textColor="@color/black" />
 
             <TextView
@@ -74,6 +54,7 @@
                 android:gravity="end"
                 android:text="我有孤独喝烈酒" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,6 +75,7 @@
                 android:gravity="end"
                 android:text="是否愿意跟我走" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,16 +85,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="缴费状态"
+                android:text="详细信息"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/tv_product_status"
+                android:id="@+id/tv_product_company_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="未缴费" />
+                android:text="一人我饮酒醉" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,6 +118,48 @@
                 android:text="2017上班年学费" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_or_margin_12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="金额"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_product_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="哈哈哈" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_or_margin_12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="缴费状态"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_product_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="未缴费" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rl_buttons"
             android:layout_width="match_parent"
@@ -155,5 +179,7 @@
                 android:textColor="#fff"
                 android:textSize="15sp" />
         </RelativeLayout>
+
+
     </LinearLayout>
 </LinearLayout>

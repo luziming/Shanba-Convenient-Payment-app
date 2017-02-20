@@ -18,5 +18,5 @@
         android:layout_below="@+id/iv_empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="暂时没有数据"/>
+        android:text="暂时没有结果"/>
 </RelativeLayout>

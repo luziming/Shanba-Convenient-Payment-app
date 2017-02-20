@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/activity_search">
 
-
         <EditText
             android:id="@+id/toolbar_search_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:hint="搜索姓名或唯一匹配号"
+            android:hint="请输入身份证号进行搜索"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1" />

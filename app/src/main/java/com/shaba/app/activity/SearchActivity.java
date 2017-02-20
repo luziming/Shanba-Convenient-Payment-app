@@ -13,7 +13,6 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -26,10 +25,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.shaba.app.R;
+import com.shaba.app.transition.FadeInTransition;
 import com.shaba.app.transition.FadeOutTransition;
 import com.shaba.app.transition.SimpleTransitionListener;
 import com.shaba.app.utils.CommonTools;
 import com.shaba.app.utils.PrefUtils;
+import com.shaba.app.utils.RegexUtil;
 import com.shaba.app.utils.ToastUtils;
 import com.shaba.app.view.Searchbar;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -71,6 +72,15 @@ public class SearchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mSearchEidt = (EditText) searchbar.findViewById(R.id.toolbar_search_edittext);
+        TextView tv_search = (TextView) searchbar.findViewById(R.id.tv_search);
+
+        tv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //进行搜索操作的方法，在该方法中可以加入mEditSearchUser的非空判断
+                search();
+            }
+        });
         mSearchEidt.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -103,7 +113,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 private void showSearch() {
                     // use the TransitionManager to animate the changes of the Toolbar
-//                    TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition());
+                    TransitionManager.beginDelayedTransition(searchbar, FadeInTransition.createTransition());
                     // here we are just changing all children to VISIBLE
                     searchbar.showContent();
                 }
@@ -111,7 +121,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         setSearchHistory();
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -150,7 +160,7 @@ public class SearchActivity extends AppCompatActivity {
             mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                 @Override
                 public boolean onTagClick(View view, int position, FlowLayout parent) {
-                    SearchActivity.this.setResult(IndustryPaymentActivity.SEARCH_CODE,new Intent().putExtra("search",mDatas[position]));
+                    SearchActivity.this.setResult(5, new Intent().putExtra("search", mDatas[position]));
                     finish();
                     return true;
                 }
@@ -235,11 +245,11 @@ public class SearchActivity extends AppCompatActivity {
         searchbar.hideContent();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_user_search, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -247,9 +257,11 @@ public class SearchActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
             return true;
-        } else if (item.getItemId() == R.id.action_clear) {
-            searchbar.clearText();
-            return true;
+//        } else if (item.getItemId() == R.id.main_action_search) {
+////            searchbar.clearText();
+//            search();
+//            return true;
+//        }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -281,16 +293,21 @@ public class SearchActivity extends AppCompatActivity {
         String searchContext = mSearchEidt.getText().toString().trim();
         if (TextUtils.isEmpty(searchContext)) {
             ToastUtils.showToast("输入框为空,请输入");
-        } else {
-            // 调用搜索的API方法
-//            searchUser(searchContext);
-            setHistory(searchContext);
-            mDatas = getHistory();
-            if (adapter != null)
-            adapter.notifyDataChanged();
-            this.setResult(IndustryPaymentActivity.SEARCH_CODE,new Intent().putExtra("search",searchContext));
-                        finish();
+            return;
         }
+        if (searchContext.endsWith("x")) {
+            searchContext = searchContext.substring(0, searchContext.length() - 1) + "X";
+        }
+        if (!RegexUtil.IdCardRegex(searchContext)) {
+            ToastUtils.showToast("请输入正确的身份证号码");
+            return;
+        }
+        setHistory(searchContext);
+        mDatas = getHistory();
+        if (adapter != null)
+            adapter.notifyDataChanged();
+        this.setResult(5, new Intent().putExtra("search", searchContext));
+        finish();
     }
 
     @Override

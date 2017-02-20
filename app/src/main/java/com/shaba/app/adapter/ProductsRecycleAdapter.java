@@ -3,7 +3,7 @@ package com.shaba.app.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.shaba.app.R;
-import com.shaba.app.been.DataBean;
+import com.shaba.app.been.ProductsEntity;
 
 import java.util.List;
 
@@ -29,17 +29,15 @@ import java.util.List;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class ProductsRecycleAdapter extends BaseQuickAdapter<DataBean,BaseViewHolder> {
+public class ProductsRecycleAdapter extends BaseQuickAdapter<ProductsEntity.DataBean, BaseViewHolder> {
 
 
-    public ProductsRecycleAdapter(List<DataBean> mList) {
+    public ProductsRecycleAdapter(List<ProductsEntity.DataBean> mList) {
         super(R.layout.item_products, mList);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, DataBean item) {
-        helper.setText(R.id.tv_products_name, item.getMer_name())
-                .setText(R.id.tv_payment_name, item.getName())
-        .linkify(R.id.tv_products_name);
+    protected void convert(BaseViewHolder helper, ProductsEntity.DataBean item) {
+        helper.setText(R.id.tv_payment_name, item.getName());
     }
 }

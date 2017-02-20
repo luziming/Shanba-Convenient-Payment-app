@@ -13,10 +13,10 @@ android {
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "com.shaba.app"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 24
-        versionCode 14
-        versionName "1.11"
+        versionCode 19
+        versionName "1.16"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的SO库架构

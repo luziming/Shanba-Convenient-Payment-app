@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto/android">
 
-    <item
-        android:id="@+id/main_action_search"
-        android:icon="@drawable/ic_action_search"
-        android:title="Search"
-        app:showAsAction="always" />
+    <!--<item-->
+        <!--android:id="@+id/main_action_search"-->
+        <!--android:icon="@drawable/ic_action_search"-->
+        <!--android:title="搜索"-->
+        <!--app:showAsAction="always" />-->
 
     <item
         android:id="@+id/main_action_record"

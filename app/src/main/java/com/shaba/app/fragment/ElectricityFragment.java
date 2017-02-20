@@ -72,7 +72,7 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
     @Bind(R.id.ll_elec_notif)
     LinearLayout llElecNotif;
 
-    private int companyID = 1;
+    private int companyID = 2;
     private CustomProgressDialog dialog;
     private String code;
 
@@ -91,8 +91,8 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
         initAutoComplete("electricity", ccavElectricityCode);
         //初始化Spinner
         List<PaymentCompany> companies = new ArrayList<>();
-        companies.add(new PaymentCompany(1, "蒙西电力"));
-        companies.add(new PaymentCompany(2, "杭后农电"));
+        companies.add(new PaymentCompany(1, "杭后农电"));
+        companies.add(new PaymentCompany(2, "蒙西电力"));
         ArrayAdapter<PaymentCompany> spinnerAdapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_spinner_item, companies);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerChoose.setAdapter(spinnerAdapter);
@@ -100,11 +100,11 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    companyID = 1;
-                    llElecNotif.setVisibility(View.GONE);
-                } else {
                     companyID = 2;
                     llElecNotif.setVisibility(View.VISIBLE);
+                } else {
+                    companyID = 1;
+                    llElecNotif.setVisibility(View.GONE);
                 }
             }
 

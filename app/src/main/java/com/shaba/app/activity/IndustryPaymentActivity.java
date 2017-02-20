@@ -2,8 +2,6 @@ package com.shaba.app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Transition;
-import android.transition.TransitionManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
@@ -14,9 +12,6 @@ import com.shaba.app.fragment.IndustryRecordFragment;
 import com.shaba.app.fragment.ProductsFragment;
 import com.shaba.app.fragment.ProductsUserFragment;
 import com.shaba.app.fragment.base.FragmentUtils;
-import com.shaba.app.transition.FadeInTransition;
-import com.shaba.app.transition.FadeOutTransition;
-import com.shaba.app.transition.SimpleTransitionListener;
 import com.shaba.app.view.TransformingToolbar;
 
 import butterknife.Bind;
@@ -32,7 +27,6 @@ public class IndustryPaymentActivity extends BaseActivity implements RadioGroup.
 //    ListView lv_industry;
 
     private int type_id = 1;
-    public static final int SEARCH_CODE = 0;
 
 
     private TextView toolbar_title;
@@ -62,31 +56,32 @@ public class IndustryPaymentActivity extends BaseActivity implements RadioGroup.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_industry_search, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
-            overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
-            return true;
-        }
-        if (item.getItemId() == R.id.main_action_search) {
-            transitionToSearch();
             return true;
         }
         if (item.getItemId() == R.id.main_action_record) {
-            FragmentUtils.startCoolFragment(this,new IndustryRecordFragment(),R.id.fl_container_industry);
+            IndustryRecordFragment fragment = new IndustryRecordFragment();
+            FragmentUtils.startCoolFragment(this,fragment,R.id.fl_container_industry);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit);
+    }
     /**
      * 过渡
      */
-    private void transitionToSearch() {
+    /*private void transitionToSearch() {
         // create a transition that navigates to search when complete
         Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
 
@@ -99,45 +94,43 @@ public class IndustryPaymentActivity extends BaseActivity implements RadioGroup.
 //        frameLP.setMargins(0, 0, 0, 0);
 //        toolbar.setLayoutParams(frameLP);
         toolbar.hideContent();
-    }
+    }*/
 
-    private Transition.TransitionListener navigateToSearchWhenDone() {
-        return new SimpleTransitionListener() {
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                Intent intent = new Intent(IndustryPaymentActivity.this, SearchActivity.class);
-                startActivityForResult(intent,SEARCH_CODE);
-//                startActivity(intent);
-                // we are handing the enter transitions ourselves
-                // this line overrides that
-                overridePendingTransition(0, 0);
+//    private Transition.TransitionListener navigateToSearchWhenDone() {
+//        return new SimpleTransitionListener() {
+//            @Override
+//            public void onTransitionEnd(Transition transition) {
+//                Intent intent = new Intent(IndustryPaymentActivity.this, SearchActivity.class);
+//                startActivityForResult(intent,2);
+////                startActivity(intent);
+//                // we are handing the enter transitions ourselves
+//                // this line overrides that
+//                overridePendingTransition(0, 0);
+//
+//                // by this point of execution we have animated the 'expansion' of the Toolbar and hidden its contents.
+//                // We are half way there. Continue to the SearchActivity to finish the animation
+//            }
+//        };
+//    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        // when you are back from the SearchActivity animate the 'shrinking' of the Toolbar and
+//        // fade its contents back in
+//        fadeToolbarIn();
+//
+//        // in case we are not coming here from the SearchActivity the Toolbar would have been already visible
+//        // so the above method has no effect
+//    }
 
-                // by this point of execution we have animated the 'expansion' of the Toolbar and hidden its contents.
-                // We are half way there. Continue to the SearchActivity to finish the animation
-            }
-        };
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // when you are back from the SearchActivity animate the 'shrinking' of the Toolbar and
-        // fade its contents back in
-        fadeToolbarIn();
-
-        // in case we are not coming here from the SearchActivity the Toolbar would have been already visible
-        // so the above method has no effect
-    }
-
-    private void fadeToolbarIn() {
-        TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
+//    private void fadeToolbarIn() {
+    // TransitionManager.beginDelayedTransition(toolbar, FadeInTransition.createTransition());
 //        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
 //        layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
-        toolbar.showContent();
+    //    toolbar.showContent();
 //        toolbar.setLayoutParams(layoutParams);
-    }
-
+    //   }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,27 +157,25 @@ public class IndustryPaymentActivity extends BaseActivity implements RadioGroup.
     private void replaceFragment(int type_id) {
         ProductsFragment fragment = new ProductsFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("type_id",type_id);
+        bundle.putInt("type_id", type_id);
         fragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().replace(R.id.fl_container_industry_type,fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fl_container_industry_type, fragment).commit();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            if (requestCode == SEARCH_CODE) {
-                ProductsUserFragment fragment = new ProductsUserFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", 2);
-                bundle.putString("search", data.getStringExtra("search"));
-                fragment.setArguments(bundle);
-                FragmentUtils.startNormalFragment(this, fragment, R.id.fl_container_industry,"industry_payment");
-            } else {
-                //银联缴费记录
-                ProductsUserFragment f = (ProductsUserFragment) getFragmentManager().findFragmentByTag("industry_payment");
-                f.onActivityResult(requestCode,resultCode,data);
-            }
+            //if (/*requestCode == 5) {
+//            ProductsUserFragment fragment = new ProductsUserFragment();
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("type_id", type_id);
+//            bundle.putString("search", data.getStringExtra("search"));
+//            fragment.setArguments(bundle);
+            ///FragmentUtils.startNormalFragment(this, fragment, R.id.fl_container_industry,"industry_payment");
+            //银联缴费记录
+            ProductsUserFragment f = (ProductsUserFragment) getFragmentManager().findFragmentByTag("industry_payment");
+            f.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

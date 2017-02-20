@@ -50,6 +50,15 @@ public class DataBean implements Parcelable{
     private String name;
     private int org_id;
     private int merchant_id;
+
+    public int getType_id() {
+        return type_id;
+    }
+
+    public void setType_id(int type_id) {
+        this.type_id = type_id;
+    }
+
     private String mer_name;
     private String updated_at;
     private int status;
@@ -60,6 +69,7 @@ public class DataBean implements Parcelable{
     private String descp;
     private String user_code;
     private String created_at;
+    private int type_id;
 
     protected DataBean(Parcel in) {
         amount = in.readString();

@@ -57,7 +57,7 @@ import butterknife.ButterKnife;
 */
 public class IndustryRecordFragment extends BaseLoadingFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.recycleView_products)
+    @Bind(R.id.recycleView_record)
     RecyclerView recycleView;
     @Bind(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefresh;
@@ -71,7 +71,7 @@ public class IndustryRecordFragment extends BaseLoadingFragment implements Swipe
 
     @Override
     public View initFragment() {
-        View view = inflater.inflate(R.layout.fragment_products_toolbar, null);
+        View view = inflater.inflate(R.layout.fragment_industry_record, null);
         ButterKnife.bind(this, view);
         swipeRefresh.setOnRefreshListener(this);
         initToolbar(view);

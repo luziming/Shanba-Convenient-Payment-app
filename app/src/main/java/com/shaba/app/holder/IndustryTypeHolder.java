@@ -33,13 +33,10 @@ import butterknife.ButterKnife;
 */
 public class IndustryTypeHolder extends BasicHolder<String> {
 
-    @Bind(R.id.tv_products_name)
-    TextView tv_products_name;
     @Bind(R.id.tv_payment_name)
     TextView tv_payment_name;
     @Override
     public void bindData(String data) {
-        tv_products_name.setText(data);
         tv_payment_name.setText("北京时间：" + SystemClock.currentThreadTimeMillis());
     }
 

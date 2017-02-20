@@ -99,6 +99,7 @@
         <item name="android:layout_marginRight">@dimen/padding_or_margin_15</item>
         <item name="android:background">#e6e6e6</item>
     </style>
+
     <style name="view_height_1_nomargin">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -149,18 +150,22 @@
     </style>
 
     <style name="Splash_Theme" parent="AppTheme">
-    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 
-    <!-- 启动时页面为透明色，避免显示空白页，好像有问题，还是空白页 -->
-    <item name="android:windowIsTranslucent">true</item>
-    <!-- 这个起作用，启动时有点延时，实际就是加载了透明的背景，如微信6.3.28 -->
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <!-- 设置启动背景图片，避免显示空白页，如支付宝9.9.5 -->
-    <!-- <item name="android:windowBackground">@drawable/splash_bg</item>  -->
-    <!-- 隐藏标题栏 -->
-    <item name="android:windowNoTitle">true</item>
-    <!-- 隐藏状态栏 -->
-    <!-- <item name="android:windowFullscreen">true</item> -->
-</style>
+        <!-- 启动时页面为透明色，避免显示空白页，好像有问题，还是空白页 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 这个起作用，启动时有点延时，实际就是加载了透明的背景，如微信6.3.28 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 设置启动背景图片，避免显示空白页，如支付宝9.9.5 -->
+        <!-- <item name="android:windowBackground">@drawable/splash_bg</item>  -->
+        <!-- 隐藏标题栏 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 隐藏状态栏 -->
+        <!-- <item name="android:windowFullscreen">true</item> -->
+    </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#a0000000</item>
+    </style>
 </resources>
