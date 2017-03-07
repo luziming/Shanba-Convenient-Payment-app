@@ -75,6 +75,9 @@ public class NewsDetailFragment extends BaseFragment {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
+                if (webView_progress == null) {
+                    return;
+                }
                 if (newProgress == 100) {
                     webView_progress.setVisibility(View.INVISIBLE);
                 } else {

@@ -3,6 +3,7 @@ package com.shaba.app.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.shaba.app.R;
+import com.shaba.app.been.Menu;
 
 import java.util.List;
 
@@ -28,14 +29,16 @@ import java.util.List;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class Menu2RecycleAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
+public class Menu2RecycleAdapter extends BaseQuickAdapter<Menu, BaseViewHolder> {
 
-    public Menu2RecycleAdapter(List<String> data) {
-        super(R.layout.recycle_item, data);
+
+    public Menu2RecycleAdapter(List<Menu> data) {
+            super(R.layout.recycle_item,data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-
+    protected void convert(BaseViewHolder helper, Menu item) {
+        helper.setText(R.id.tv_recycle_item, item.getName())
+                .setImageResource(R.id.iv_recycle_item, item.getIcon());
     }
 }

@@ -39,7 +39,6 @@ public class LoginActivity extends BaseActivity {
     private String phoneNumber;
     private String password;
 
-
     @Override
     protected int getLayoutID() {
         return R.layout.activity_login;

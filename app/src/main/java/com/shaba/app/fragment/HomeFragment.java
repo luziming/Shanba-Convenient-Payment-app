@@ -22,7 +22,7 @@ import com.shaba.app.been.NewsTopPicEntity;
 import com.shaba.app.fragment.base.BaseLoadingFragment;
 import com.shaba.app.holder.HomeBannerHolder;
 import com.shaba.app.holder.MapHolder;
-import com.shaba.app.holder.MenuHolder;
+import com.shaba.app.holder.MenuPageHolder;
 import com.shaba.app.holder.NewsBannerHolder;
 import com.shaba.app.holder.NewsHolder;
 import com.shaba.app.utils.GsonTools;
@@ -77,21 +77,23 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
     private NewsBannerHolder newsBannerHolder;
     private NewsHolder newsHolder;
     private List<NewsListEntity> newsList;
+    private MenuPageHolder menuPageHolder;
 
     @Override
     public View initFragment() {
-
+        Log.e("HomeFragment", "initFragment:执行 ");
         View view = inflater.inflate(R.layout.fragment_home, null);
         ButterKnife.bind(this, view);
-
         /********首页轮播图*********/
         bannerHolder = new HomeBannerHolder();
         ll_home_container.addView(bannerHolder.getHolderView());
         /********菜单栏************/
-        MenuHolder menuHolder = new MenuHolder(mActivity);
-        ll_home_container.addView(menuHolder.getHolderView());
+//        MenuHolder menuHolder = new MenuHolder(mActivity);
+//        ll_home_container.addView(menuHolder.getHolderView());
+        menuPageHolder = new MenuPageHolder(mActivity);
+        ll_home_container.addView(menuPageHolder.getHolderView());
         //设置菜单的点击事件
-        menuHolder.recycleAdapter.setOnItemClickListener(this);
+        menuPageHolder.adapter.setOnItemClickListener(this);
         /********地图栏************/
         MapHolder mapHolder = new MapHolder();
         ll_home_container.addView(mapHolder.getHolderView());
@@ -108,6 +110,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
 
         return view;
     }
+
 
     @Override
     public void requestData() {
@@ -127,65 +130,70 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
 
     /**
      * 功能菜单的点击事件
-     *
      * @param position
      */
     @Override
     public void onClick(int position) {
         String type = "";
-        switch (position) {
-            case 0:
-                type = "electricity";
-                break;
-            case 1:
-                Intent intent = new Intent(mActivity, IndustryPaymentActivity.class);
-                lanuchActivity(intent);
-                break;
-            case 2:
-                type = "phone-charge";
-                break;
-            case 3:
-                type = "tel-charge";
-                break;
-            case 4:
-                type = "flow-charge";
-                break;
-            case 5:
-                type = "social-security";
-                break;
-            case 6:
-                ToastUtils.showToast("该功能即将上线!");
-                type = null;
-                break;
-            case 7:
-                type = "social-status";
-                break;
-            case 8:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 9:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 10:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 11:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 12:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 13:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 14:
-                ToastUtils.showToast("该功能即将上线");
-                break;
-            case 15:
-                type = "broadband-charge";
+        if (menuPageHolder.getPage() == 0) {
+            switch (position) {
+                case 0:
+                    type = "electricity";
+                    break;
+                case 1:
+                    Intent intent = new Intent(mActivity, IndustryPaymentActivity.class);
+                    lanuchActivity(intent);
+                    break;
+                case 2:
+                    type = "phone-charge";
+                    break;
+                case 3:
+                    type = "tel-charge";
+                    break;
+                case 4:
+                    type = "flow-charge";
+                    break;
+                case 5:
+                    type = "social-security";
+                    break;
+                case 6:
+                    ToastUtils.showToast("该功能即将上线!");
+                    type = null;
+                    break;
+                case 7:
+                    type = "social-status";
+                    break;
+            }
+        } else {
+            switch (position) {
+                case 0:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 1:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 2:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 3:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 4:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 5:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 6:
+                    ToastUtils.showToast("该功能即将上线");
+                    break;
+                case 7:
+                    type = "broadband-charge";
 //                type = "industry-payment";
-                break;
+                    break;
+            }
         }
+
         if (!TextUtils.isEmpty(type)){
             Intent intent = new Intent(mActivity, SecondActivity.class);
             intent.putExtra("type", type);

@@ -1,0 +1,180 @@
+{
+    "android_gradle_plugin_version": "2.2.1",
+    "apk_path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\build\\outputs\\apk\\app-debug.apk",
+    "apt": {
+        
+    },
+    "apt_libraries": {
+        "dagger": false,
+        "butterknife": false
+    },
+    "auto_dependency": true,
+    "build_cache_dir": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\build\\freeline",
+    "build_directory": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\build",
+    "build_script": "gradlew.bat :app:assembleDebug",
+    "build_script_work_directory": "",
+    "build_tools_directory": "D:\\SDK\\sdk\\build-tools\\24.0.3",
+    "build_tools_version": "24.0.3",
+    "check_sources_md5": [
+        
+    ],
+    "compile_sdk_directory": "D:\\SDK\\sdk\\platforms\\android-24",
+    "compile_sdk_version": "android-24",
+    "databinding": [
+        
+    ],
+    "databinding_compiler_jar": "",
+    "databinding_modules": [
+        
+    ],
+    "debug_package": "com.shaba.app",
+    "exclude_dep_res_paths": [
+        
+    ],
+    "extra_dep_res_paths": [
+        
+    ],
+    "freeline_cache_dir": "D:\\ASworkspace\\Shanba-Convenient-Payment-app",
+    "freeline_gradle_plugin_version": "0.8.6",
+    "ignore_resource_ids": [
+        "avd_hide_password_1",
+        "avd_hide_password_2",
+        "avd_hide_password_3",
+        "avd_show_password_1",
+        "avd_show_password_2",
+        "avd_show_password_3"
+    ],
+    "java_home": "D:\\Develop\\Java\\jdk1.8.0_73",
+    "launcher": "com.shaba.app.activity.SplashActivity",
+    "main_assets_directory": [
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\assets",
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\assets"
+    ],
+    "main_jniLibs_directory": [
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\jniLibs",
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\jniLibs"
+    ],
+    "main_jni_directory": [
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\jni",
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\jni"
+    ],
+    "main_manifest_path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\AndroidManifest.xml",
+    "main_project_dir": "app",
+    "main_project_name": "app",
+    "main_r_path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\build\\generated\\source\\r\\debug\\R.java",
+    "main_res_directory": [
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\res",
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\res"
+    ],
+    "main_src_directory": [
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\java",
+        "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\java"
+    ],
+    "module_dependencies": {
+        "app": [
+            "banner",
+            "pullToReFresh_library"
+        ],
+        "banner": [
+            
+        ],
+        "pullToReFresh_library": [
+            
+        ]
+    },
+    "modules": [
+        {
+            "name": "app",
+            "path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app"
+        },
+        {
+            "name": "banner",
+            "path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner"
+        },
+        {
+            "name": "pullToReFresh_library",
+            "path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library"
+        }
+    ],
+    "package": "com.shaba.app",
+    "product_flavor": "",
+    "project_source_sets": {
+        "app": {
+            "main_assets_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\assets",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\assets"
+            ],
+            "main_jniLibs_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\jniLibs",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\jniLibs"
+            ],
+            "main_jni_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\jni",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\jni"
+            ],
+            "main_manifest_path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\AndroidManifest.xml",
+            "main_res_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\res",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\res"
+            ],
+            "main_src_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\debug\\java",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\app\\src\\main\\java"
+            ]
+        },
+        "banner": {
+            "main_assets_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\release\\assets",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\main\\assets"
+            ],
+            "main_jniLibs_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\release\\jniLibs",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\main\\jniLibs"
+            ],
+            "main_jni_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\release\\jni",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\main\\jni"
+            ],
+            "main_manifest_path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\main\\AndroidManifest.xml",
+            "main_res_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\release\\res",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\main\\res"
+            ],
+            "main_src_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\release\\java",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\banner\\src\\main\\java"
+            ]
+        },
+        "pullToReFresh_library": {
+            "main_assets_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\release\\assets",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\main\\assets"
+            ],
+            "main_jniLibs_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\release\\jniLibs",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\main\\jniLibs"
+            ],
+            "main_jni_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\release\\jni",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\main\\jni"
+            ],
+            "main_manifest_path": "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\main\\AndroidManifest.xml",
+            "main_res_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\release\\res",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\main\\res"
+            ],
+            "main_src_directory": [
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\release\\java",
+                "D:\\ASworkspace\\Shanba-Convenient-Payment-app\\pullToReFresh_library\\src\\main\\java"
+            ]
+        }
+    },
+    "project_type": "gradle",
+    "retrolambda": {
+        
+    },
+    "root_dir": "D:\\ASworkspace\\Shanba-Convenient-Payment-app",
+    "sdk_directory": "D:\\SDK\\sdk",
+    "use_jdk8": true,
+    "use_system_gradle": false
+}

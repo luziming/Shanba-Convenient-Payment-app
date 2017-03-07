@@ -1,14 +1,18 @@
 package com.shaba.app.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.shaba.app.R;
+import com.shaba.app.been.Menu;
 import com.shaba.app.global.MyApplication;
 import com.shaba.app.holder.MenuAdapterHolder;
 import com.shaba.app.utils.DeviceUtils;
+
+import java.util.List;
 
 /*
                    _ooOoo_
@@ -35,6 +39,7 @@ import com.shaba.app.utils.DeviceUtils;
 public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuAdapterHolder> {
 
     private LayoutInflater inflater;
+    private List<Menu> menus;
 
     int imgs[] = {
             R.drawable.icon_menu1,
@@ -55,7 +60,7 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuAdapterHolder> 
             R.drawable.icon_menu2};
 
     String imgs_str[] = new String[]{"电费", "全行业缴费", "手机话费", "固话缴费", "流量充值", "社保查询", "有线电视", "社保状态",
-            "暖气费","公积金查询","天然气","快递查询","火车票","违章查询","加油卡充值","宽带缴费"};
+            "暖气费", "公积金查询", "天然气", "快递查询", "火车票", "违章查询", "加油卡充值", "宽带缴费"};
 
     private OnItemClickListener mOnItemClickListener;
 
@@ -67,8 +72,9 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuAdapterHolder> 
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public MenuRecycleAdapter(LayoutInflater mInflater) {
+    public MenuRecycleAdapter(LayoutInflater mInflater, List<Menu> menus) {
         this.inflater = mInflater;
+        this.menus = menus;
     }
 
     @Override
@@ -82,22 +88,22 @@ public class MenuRecycleAdapter extends RecyclerView.Adapter<MenuAdapterHolder> 
         ViewGroup.LayoutParams params = holder.ll_recycle_root.getLayoutParams();
         int screenWidth = DeviceUtils.getScreenWidth(MyApplication.context);
         params.width = (int) (screenWidth * 0.25);
-//        params.height = (int) (screenWidth * 0.25);
         holder.ll_recycle_root.setLayoutParams(params);
-        holder.tv_recycle_item.setText(imgs_str[position]);
-        holder.iv_recycle_item.setImageResource(imgs[position]);
+        holder.tv_recycle_item.setText(menus.get(position).getName());
+        holder.iv_recycle_item.setImageResource(menus.get(position).getIcon());
         holder.ll_recycle_root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
                     mOnItemClickListener.onClick(position);
                 }
+                Log.e("MenuRecycleAdapter", "点击了: " + position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return imgs.length;
+        return menus.size();
     }
 }

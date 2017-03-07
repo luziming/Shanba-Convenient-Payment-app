@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity {
     LinearLayout ll_left;
 
     public ActionBarDrawerToggle mDrawerToggle;
+
     private TextView toolbar_title;
     private long mExitTime;
 

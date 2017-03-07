@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.antfortune.freeline.FreelineCore;
+
 /*
                    _ooOoo_
                   o8888888o
@@ -35,6 +37,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FreelineCore.init(this);
         if (context == null) {
             context = this;
         }

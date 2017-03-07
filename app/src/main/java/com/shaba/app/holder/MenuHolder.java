@@ -46,6 +46,7 @@ public class MenuHolder extends BasicHolder<Integer> {
     public MenuHolder(Activity mActivity) {
         this.mActivity = mActivity;
     }
+
 //    private MenuRecycleAdapter.OnItemClickListener mOnItemClickListener;
 //
 //    public interface OnItemClickListener {
@@ -64,8 +65,9 @@ public class MenuHolder extends BasicHolder<Integer> {
     @Override
     public View initHolderView() {
         View view = inflater.inflate(R.layout.holder_home_menu, null);
+
         ButterKnife.bind(this, view);
-        recycleAdapter = new MenuRecycleAdapter(inflater);
+        //recycleAdapter = new MenuRecycleAdapter(inflater);
         //设置布局管理器
         GridLayoutManager layoutManager = new GridLayoutManager(mActivity, 2);
         //设置为垂直布局，这也是默认的

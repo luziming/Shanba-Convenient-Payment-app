@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.shaba.app.view.WrapContentHeightViewPager
+        android:id="@+id/viewPager_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.shaba.app.view.WrapContentHeightViewPager>
+
+    <RadioGroup
+        android:id="@+id/rg_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_or_margin_8">
+
+        <RadioButton
+            android:id="@+id/rb_tab_1"
+            android:layout_width="12dp"
+            android:background="@drawable/main_menu_potin_seletor"
+            android:layout_height="12dp"
+            android:button="@null"
+            android:checked="true" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="1dp" />
+
+        <RadioButton
+            android:id="@+id/rb_tab_2"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/main_menu_potin_seletor"
+            android:button="@null" />
+
+    </RadioGroup>
+</LinearLayout>
