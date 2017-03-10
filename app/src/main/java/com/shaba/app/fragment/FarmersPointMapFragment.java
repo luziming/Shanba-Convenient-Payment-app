@@ -75,9 +75,10 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
 
         }
     };
+
     @Override
     public void requestData() {
-        appUtil.getBankPoint(new FarmersPointResponseHandler(),token);
+        appUtil.getBankPoint(new FarmersPointResponseHandler(), token);
         elv_farmers.setGroupIndicator(null);
         elv_farmers.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -86,10 +87,10 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
                 if (StringUtil.isFastClick())
                     return false;
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("mapInfo",item_list.get(groupPosition).get(childPosition));
+                bundle.putParcelable("mapInfo", item_list.get(groupPosition).get(childPosition));
                 MapFragment mapFragment = new MapFragment();
                 mapFragment.setArguments(bundle);
-                FragmentUtils.startCoolFragment(mActivity,mapFragment,R.id.fl_container_content);
+                FragmentUtils.startCoolFragment(mActivity, mapFragment, R.id.fl_container_content);
                 EventBus.getDefault().post(item_list.get(groupPosition).get(childPosition).getName());
                 return false;
             }
@@ -106,7 +107,6 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
     }
 
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -118,7 +118,7 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
         @Override
         public void onSuccess(int id, Header[] headers, byte[] bytes) {
             try {
-                JSONObject obj=new JSONObject(new String(bytes));
+                JSONObject obj = new JSONObject(new String(bytes));
                 JSONArray jary = obj.getJSONArray("data");
                 group_list = new ArrayList<String>();
                 item_list = new ArrayList<List<MapListEntity>>();
@@ -126,13 +126,14 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
                     JSONObject jobj = jary.getJSONObject(i);
                     group_list.add(jobj.getString("key"));
                     JSONArray ary = jobj.getJSONArray("value");
-                    List<MapListEntity> mapListEntities = GsonTools.getProdjects(ary.toString(),MapListEntity[].class );
+                    List<MapListEntity> mapListEntities = GsonTools.getProdjects(ary.toString(), MapListEntity[].class);
                     item_list.add(mapListEntities);
                 }
-                if (adapter==null) {
+                if (adapter == null) {
                     adapter = new FarmersPointAdapter();
-                    elv_farmers.setAdapter(adapter);
-                }else {
+                    if (elv_farmers != null)
+                        elv_farmers.setAdapter(adapter);
+                } else {
                     adapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {
@@ -140,6 +141,7 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
             }
             Zz();
         }
+
         @Override
         public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
             loadingPager.showErrorView();
@@ -215,6 +217,7 @@ public class FarmersPointMapFragment extends BaseLoadingFragment {
                     childPosition).getAddress());
             return convertView;
         }
+
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
             return true;

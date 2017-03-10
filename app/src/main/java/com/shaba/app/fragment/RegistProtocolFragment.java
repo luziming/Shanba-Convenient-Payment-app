@@ -47,7 +47,8 @@ public class RegistProtocolFragment extends BaseFragment implements RadioGroup.O
     @Bind(R.id.tv_agree)
     TextView tvAgree;
 
-    private boolean isArgee = true;
+    private boolean isArgee = false;
+
     @Override
     public View initViews() {
         View view = inflater.inflate(R.layout.fragment_protocol, null);

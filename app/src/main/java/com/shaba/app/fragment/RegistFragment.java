@@ -97,6 +97,7 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        handler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -114,8 +115,7 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
                 params.put("mobile", phone);
                 params.put("type", ConstantUtil.SEND_SMS_REGIST);
                 appUtil.getSMS(params, new MyResponseHandler());
-                Message message = handler.obtainMessage(1); // Message
-                handler.sendMessageDelayed(message, 1000);
+
                 break;
             case R.id.login_obt :
                 phoneNum = editPhone.getText().toString().trim();
@@ -177,6 +177,8 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
                     return;
                 }else {
                     ToastUtil.show(context, "短信发送成功，请查收!");
+                    Message message = handler.obtainMessage(1); // Message
+                    handler.sendMessageDelayed(message, 1000);
                 }
             } catch (Exception e) {
                 e.getMessage();

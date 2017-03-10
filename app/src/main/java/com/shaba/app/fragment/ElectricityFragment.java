@@ -137,7 +137,7 @@ public class ElectricityFragment extends BaseFragment implements View.OnClickLis
                     public void operate(View contentView) {//这里的contentView就是上面代码中传入的自定义的View或者layout资源inflate出来的view
                         TextView message = (TextView) contentView.findViewById(R.id.tv_dialog_message);
                         message.setGravity(Gravity.LEFT);
-                        message.setText(getResources().getString(R.string.alert_elec));
+                        message.setText(mActivity.getResources().getString(R.string.alert_elec));
                         message.setFocusable(false);
                     }
                 })

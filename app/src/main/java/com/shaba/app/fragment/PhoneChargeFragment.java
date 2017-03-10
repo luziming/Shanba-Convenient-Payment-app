@@ -1,5 +1,6 @@
 package com.shaba.app.fragment;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -33,6 +34,11 @@ import com.shaba.app.utils.StringUtil;
 import com.shaba.app.utils.ToastUtils;
 import com.shaba.app.utils.UnionPayUtils;
 import com.shaba.app.view.MyGridView;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -88,6 +94,7 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
     @Bind(et_other)
     EditText et_amount;
 
+    private static final int REQUEST_CODE_SETTING = 300;
     //缴费金额列表
     private List<String> amountList = new ArrayList<String>() {
         {
@@ -213,7 +220,7 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                     }
                 } else if (mMode.equals("tel")) {
                     if (!RegexUtil.telRegex2(phone)) {
-                        ToastUtils.showToast( mActivity.getResources().getString(R.string.recharge_telnum_error));
+                        ToastUtils.showToast(mActivity.getResources().getString(R.string.recharge_telnum_error));
                         return;
                     }
                 } else if (mMode.equals("broadband")) {
@@ -234,10 +241,66 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                 saveHistory(mMode, phone);
                 break;
             case R.id.constract:
-                constract.setInputType(InputType.TYPE_NULL);
-                startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
-                break;
+                //6.0之后需要动态申请权限
+                Log.e("PhoneChargeFragment", "获取联系人: 无权限");
+                // 先判断是否有权限。
+//                if (AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS)) {
+//                    Log.e("PhoneChargeFragment", "获取联系人: 检查权限权限" + AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS));
+//                    // 有权限，直接do anything.
+//                    constract.setInputType(InputType.TYPE_NULL);
+//                    startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
+//                } else {
+                    Log.e("PhoneChargeFragment", "获取联系人: 申请权限");
+                    // 申请权限。
+                    AndPermission.with(this)
+                            .requestCode(100)
+                            .permission(Manifest.permission.WRITE_CONTACTS)
+                            .rationale(new RationaleListener() {
+                                @Override
+                                public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                                    // 这里使用自定义对话框，如果不想自定义，用AndPermission默认对话框：
+                                    Log.e("PhoneChargeFragment", "获取联系人: 申请权限对话框");
+                                    AndPermission.rationaleDialog(mActivity, rationale).show();
+                                }
+                            })
+                            .send();
+                    break;
+                }
+//        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        // 只需要调用这一句，第一个参数是当前Acitivity/Fragment，回调方法写在当前Activity/Framgent。
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    // 全部成功回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionYes(100)
+    private void getLocationYes(List<String> grantedPermissions) {
+        Log.e("PhoneChargeFragment", "获取联系人: 申请权限成功");
+        // 有权限，直接do anything.
+        constract.setInputType(InputType.TYPE_NULL);
+        startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
+    }
+
+    // 失败回调的方法，用注解即可，里面的数字是请求时的requestCode。
+    @PermissionNo(100)
+    private void getLocationNo(List<String> deniedPermissions) {
+        // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
+        if (AndPermission.hasAlwaysDeniedPermission(mActivity, deniedPermissions)) {
+            // 第一种：用默认的提示语。
+            Log.e("PhoneChargeFragment", "获取联系人: 用户否勾选了不再提示并且拒绝了权限");
+//            AndPermission.defaultSettingDialog(this, REQUEST_CODE_SETTING).show();
+            // 第二种：用自定义的提示语。
+             AndPermission.defaultSettingDialog(this, REQUEST_CODE_SETTING)
+                     .setTitle("权限申请失败")
+                     .setMessage("联系人相关权限已被关闭，请您到设置页面手动授权，否则功能无法正常使用！")
+                     .setPositiveButton("好，去设置")
+                     .show();
         }
+
     }
 
     @Override
@@ -343,11 +406,12 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                 }
             }
         }
+
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             Log.e("PhoneChargeResponseHandler", "Error: ");
             UnionPayUtils.getInstance().disMissDialog();
-            ToastUtils.showToast(errorResponse.toString());
+            ToastUtils.showToast("充值失败,请稍后重试!");
         }
     }
 

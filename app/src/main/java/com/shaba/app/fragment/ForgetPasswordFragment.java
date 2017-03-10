@@ -95,6 +95,8 @@ public class ForgetPasswordFragment extends BaseFragment implements View.OnClick
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        //移除所有的消息
+        handler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -112,8 +114,6 @@ public class ForgetPasswordFragment extends BaseFragment implements View.OnClick
                 params.put("mobile", phone);
                 params.put("type", ConstantUtil.SEND_SMS_FORGET);
                 appUtil.getSMS(params, new MyResponseHandler());
-                Message message = handler.obtainMessage(1); // Message
-                handler.sendMessageDelayed(message, 1000);
                 break;
             case R.id.btn_findPW:
                 phone = editPhone.getText().toString().trim();
@@ -172,6 +172,8 @@ public class ForgetPasswordFragment extends BaseFragment implements View.OnClick
                     }
                     return;
                 } else {
+                    Message message = handler.obtainMessage(1); // Message
+                    handler.sendMessageDelayed(message, 1000);
                     ToastUtil.show(context, "短信发送成功，请查收!");
                 }
 

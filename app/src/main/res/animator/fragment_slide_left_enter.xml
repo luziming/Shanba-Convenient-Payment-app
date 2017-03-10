@@ -5,7 +5,7 @@
         android:valueFrom="1280" android:valueTo="0"
         android:valueType="floatType"
         android:propertyName="translationX"
-        android:duration="400" />
+        android:duration="200" />
 
     <!--<objectAnimator-->
         <!--android:interpolator="@android:interpolator/decelerate_quint"-->

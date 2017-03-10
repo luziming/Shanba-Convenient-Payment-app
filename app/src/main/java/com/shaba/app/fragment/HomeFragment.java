@@ -130,6 +130,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
 
     /**
      * 功能菜单的点击事件
+     *
      * @param position
      */
     @Override
@@ -194,7 +195,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
             }
         }
 
-        if (!TextUtils.isEmpty(type)){
+        if (!TextUtils.isEmpty(type)) {
             Intent intent = new Intent(mActivity, SecondActivity.class);
             intent.putExtra("type", type);
             lanuchActivity(intent);
@@ -204,6 +205,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
 
     /**
      * 地图的点击事件
+     *
      * @param position
      */
     @Override
@@ -264,14 +266,15 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 response = new JSONObject(new String(bytes));
                 JSONArray ary = response.getJSONArray("data");
                 List<NewsTopPicEntity> topPicList = GsonTools.getProdjects(ary.toString(), NewsTopPicEntity[].class);
-                if (topPicList != null) {
+                if (topPicList.size() > 0) {
                     bannerHolder.bindData(topPicList);
                     homeBannerOk = true;
                 }
                 if (homeBannerOk && newsBannerOk) {
                     Zz();
                     //scrollView滑动到顶部
-                    scrollView.fullScroll(ScrollView.FOCUS_UP);
+                    if (scrollView != null)
+                        scrollView.fullScroll(ScrollView.FOCUS_UP);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -296,7 +299,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                 response = new JSONObject(new String(bytes));
                 JSONArray ary = response.getJSONArray("data");
                 List<NewsTopPicEntity> topPicList = GsonTools.getProdjects(ary.toString(), NewsTopPicEntity[].class);
-                if (topPicList != null) {
+                if (topPicList.size() > 0) {
                     newsBannerHolder.bindData(topPicList);
                     newsBannerOk = true;
                 }
@@ -304,7 +307,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                     Zz();
                     //scrollView滑动到顶部
                     if (scrollView != null)
-                    scrollView.fullScroll(ScrollView.FOCUS_UP);
+                        scrollView.fullScroll(ScrollView.FOCUS_UP);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class RegexUtil {
 
-    public static final String TEL_REGEX = "(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$";
+    public static final String TEL_REGEX = "(13[0-9]|15[012356789]|17[5678]|18[0-9]|14[57])[0-9]{8}$";
     public static final String TEL_REGEX2 = "\\d{3}\\d{8}|\\d{3}\\d{7}|\\d{4}\\d{8}|\\d{4}\\d{7}";
     public static final String IdCard_REgex = "^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$";
     /**
@@ -16,9 +16,9 @@ public class RegexUtil {
     private static final String CHINA_TELECOM_PATTERN = "(^1(33|53|77|8[019])\\d{8}$)|(^1700\\d{7}$)";
 
     /**
-     * 中国联通号码格式验证 手机段：130,131,132,155,156,185,186,145,176,1709
+     * 中国联通号码格式验证 手机段：130,131,132,155,156,185,186,145,176,1709,175
      **/
-    private static final String CHINA_UNICOM_PATTERN = "(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\\d{8}$)|(^1709\\d{7}$)";
+    private static final String CHINA_UNICOM_PATTERN = "(^1(3[0-2]|4[5]|5[56]|7[56]|8[56])\\d{8}$)|(^1709\\d{7}$)";
     /**
      * 中国移动号码格式验证
      * 手机段：134,135,136,137,138,139,150,151,152,157,158,159,182,183,184
