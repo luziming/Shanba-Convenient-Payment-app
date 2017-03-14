@@ -1,4 +1,4 @@
-package me.wangyuwei.banner;
+package niubide.banner;
 
 import android.content.Context;
 import android.graphics.Canvas;

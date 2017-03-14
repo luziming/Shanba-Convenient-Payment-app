@@ -1,4 +1,4 @@
-package me.wangyuwei.banner;
+package niubide.banner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import me.wangyuwei.banner.R;
 
 /**
  * 作者： 路凯 on 16/6/9 17:32

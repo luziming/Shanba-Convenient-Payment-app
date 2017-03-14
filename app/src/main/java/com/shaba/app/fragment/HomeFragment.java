@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import niubide.banner.OnBannerClickListener;
 
 /*
                    _ooOoo_
@@ -265,9 +266,15 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
             try {
                 response = new JSONObject(new String(bytes));
                 JSONArray ary = response.getJSONArray("data");
-                List<NewsTopPicEntity> topPicList = GsonTools.getProdjects(ary.toString(), NewsTopPicEntity[].class);
+                final List<NewsTopPicEntity> topPicList = GsonTools.getProdjects(ary.toString(), NewsTopPicEntity[].class);
                 if (topPicList.size() > 0) {
                     bannerHolder.bindData(topPicList);
+                    bannerHolder.home_banner_view.setOnBannerClickListener(new OnBannerClickListener() {
+                        @Override
+                        public void onClick(int position) {
+                            ToastUtils.showToast("轮播图:" + position );
+                        }
+                    });
                     homeBannerOk = true;
                 }
                 if (homeBannerOk && newsBannerOk) {

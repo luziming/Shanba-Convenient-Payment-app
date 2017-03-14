@@ -28,7 +28,7 @@
             android:background="#669933" />
     </LinearLayout>
 
-    <me.wangyuwei.banner.BannerView
+    <niubide.banner.BannerView
         android:id="@+id/news_banner_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"

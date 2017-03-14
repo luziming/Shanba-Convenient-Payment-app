@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/line" />
 
-    <me.wangyuwei.banner.BannerLine
+    <niubide.banner.BannerLine
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="2dp"

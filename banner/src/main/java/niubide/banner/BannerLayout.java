@@ -1,4 +1,4 @@
-package me.wangyuwei.banner;
+package niubide.banner;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+import me.wangyuwei.banner.R;
 
 /**
  * 作者： 路凯 on 16/6/9 17:37

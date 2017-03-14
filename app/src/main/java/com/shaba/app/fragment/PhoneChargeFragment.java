@@ -244,12 +244,12 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                 //6.0之后需要动态申请权限
                 Log.e("PhoneChargeFragment", "获取联系人: 无权限");
                 // 先判断是否有权限。
-//                if (AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS)) {
-//                    Log.e("PhoneChargeFragment", "获取联系人: 检查权限权限" + AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS));
-//                    // 有权限，直接do anything.
-//                    constract.setInputType(InputType.TYPE_NULL);
-//                    startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
-//                } else {
+                if (AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS)) {
+                    Log.e("PhoneChargeFragment", "获取联系人: 检查权限权限" + AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS));
+                    // 有权限，直接do anything.
+                    constract.setInputType(InputType.TYPE_NULL);
+                    startActivityForResult(new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI), 1);
+                } else {
                     Log.e("PhoneChargeFragment", "获取联系人: 申请权限");
                     // 申请权限。
                     AndPermission.with(this)
@@ -266,7 +266,7 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                             .send();
                     break;
                 }
-//        }
+        }
     }
 
     @Override

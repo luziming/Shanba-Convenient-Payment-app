@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.shaba.app.R;
 import com.shaba.app.adapter.BankMapAdapter;
@@ -22,14 +21,11 @@ import com.yanzhenjie.permission.PermissionNo;
 import com.yanzhenjie.permission.PermissionYes;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
-
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
@@ -71,17 +67,9 @@ public class BankMapFragment extends BaseLoadingFragment implements AdapterView.
         View view = inflater.inflate(R.layout.fragment_bank_map, null);
         ButterKnife.bind(this, view);
         lvBankMap.setOnItemClickListener(this);
-//        PermissionUtils.requestMultiPermissions(mActivity, mPermissionGrant);
-
         return view;
     }
 
-//    private PermissionUtils.PermissionGrant mPermissionGrant = new PermissionUtils.PermissionGrant() {
-//        @Override
-//        public void onPermissionGranted(int requestCode) {
-//
-//        }
-//    };
 
     @Override
     public void requestData() {
@@ -99,13 +87,12 @@ public class BankMapFragment extends BaseLoadingFragment implements AdapterView.
             return;
         this.mPosition = position;
         //6.0之后需要动态申请权限
-
         // 先判断是否有权限。
-//        if (AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS)) {
-//            Log.e("BankMapFragment", "获取位置: 检查权限权限" + AndPermission.hasPermission(mActivity, Manifest.permission.WRITE_CONTACTS));
-//            // 有权限，直接do anything.
-//            startMapFragment(position);
-//        } else {
+        if (AndPermission.hasPermission(mActivity, Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Log.e("BankMapFragment", "获取位置: 检查权限权限" + AndPermission.hasPermission(mActivity, Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION));
+            // 有权限，直接do anything
+            startMapFragment(position);
+        } else {
             Log.e("BankMapFragment", "获取位置: 申请权限");
             // 申请权限。
             AndPermission.with(this)
@@ -120,7 +107,7 @@ public class BankMapFragment extends BaseLoadingFragment implements AdapterView.
                         }
                     })
                     .send();
-//        }
+        }
     }
 
     @Override

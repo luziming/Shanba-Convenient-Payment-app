@@ -1,4 +1,4 @@
-package me.wangyuwei.banner;
+package niubide.banner;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

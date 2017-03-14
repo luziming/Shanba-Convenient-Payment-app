@@ -10,8 +10,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.wangyuwei.banner.BannerEntity;
-import me.wangyuwei.banner.BannerView;
+import niubide.banner.BannerEntity;
+import niubide.banner.BannerView;
 
 /*
                    _ooOoo_
