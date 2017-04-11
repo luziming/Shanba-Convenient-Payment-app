@@ -123,13 +123,12 @@ public class AppUtil {
      * @param responseHandler
      */
     public void updatePayStatus(Map<Object, Object> params, JsonHttpResponseHandler responseHandler) {
-        //HttpClientUtils.postJson(ApiUrl.UPDATE_PAY_STATUS.toString(), params, responseHandler);
+//        HttpClientUtils.postJson(ApiUrl.UPDATE_PAY_STATUS.toString(), params, responseHandler);
     }
 
 
     /**
      * 获取新闻列表
-     *
      * @param newListResponseHandler
      */
     public void getNewListMore(AsyncHttpResponseHandler newListResponseHandler, RequestParams params, String token) {
@@ -139,7 +138,6 @@ public class AppUtil {
 
     /**
      * 获取新闻列表
-     *
      */
     public void getNewList(AsyncHttpResponseHandler mapListResponseHandler, String token) {
         // TODO http://115.28.138.217:3000/api/news-list

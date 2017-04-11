@@ -482,7 +482,7 @@ public class ProductsUserFragment extends BaseLoadingFragment {
         if (data == null) {
             return;
         }
-        if (requestCode == 5) {
+        if (resultCode == 5) {
             RequestParams params = new RequestParams();
             search = data.getStringExtra("search");
             type_id = getArguments().getInt("type_id");

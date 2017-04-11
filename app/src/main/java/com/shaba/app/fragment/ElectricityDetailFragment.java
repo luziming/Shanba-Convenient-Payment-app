@@ -17,6 +17,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.shaba.app.R;
 import com.shaba.app.fragment.base.BaseFragment;
 import com.shaba.app.global.ConstantUtil;
+import com.shaba.app.utils.SBLog;
 import com.shaba.app.utils.StringUtil;
 import com.shaba.app.utils.ToastUtils;
 import com.shaba.app.view.CustomProgressDialog;
@@ -201,6 +202,7 @@ public class ElectricityDetailFragment extends BaseFragment implements View.OnCl
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             try {
+                SBLog.json("TN",response.toString());
                 if (!response.getBoolean("success")) {
                     ToastUtils.showToast(response.getString("error"));
                     return;

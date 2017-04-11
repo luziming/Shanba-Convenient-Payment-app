@@ -63,10 +63,10 @@ public class BillListAdapater extends BaseAdapter {
             switch (Integer.valueOf(billList.get(arg0).getType_id())) {
 
                 case 1:
-                    hodler.tv_BillType.setText("手机花费");
+                    hodler.tv_BillType.setText("手机话费");
                     break;
                 case 2:
-                    hodler.tv_BillType.setText("固话花费");
+                    hodler.tv_BillType.setText("固话话费");
                     break;
                 case 3:
                     hodler.tv_BillType.setText("手机流量");

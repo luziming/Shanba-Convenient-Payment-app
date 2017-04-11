@@ -11,7 +11,7 @@ android {
         }
     }
     compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.shaba.app"
         minSdkVersion 15
@@ -21,7 +21,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //设置支持的SO库架构
-            abiFilters 'armeabi'//,'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi','x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -58,4 +58,5 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
     //动态权限申请库
     compile 'com.yanzhenjie:permission:1.0.5'
+
 }

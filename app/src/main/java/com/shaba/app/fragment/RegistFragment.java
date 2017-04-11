@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,7 +116,6 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
                 params.put("mobile", phone);
                 params.put("type", ConstantUtil.SEND_SMS_REGIST);
                 appUtil.getSMS(params, new MyResponseHandler());
-
                 break;
             case R.id.login_obt :
                 phoneNum = editPhone.getText().toString().trim();
@@ -129,7 +129,7 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
                     ToastUtils.showToast("验证码错误");
                     return;
                 }
-                Map<Object, Object> p = new HashMap<Object, Object>();
+                Map<Object, Object> p = new HashMap<>();
                 p.put("mobile", phoneNum);
                 p.put("code", checkCode);
                 appUtil.checkVerificationCode(p, new checkVerificationCodeHandler());
@@ -165,6 +165,12 @@ public class RegistFragment extends BaseFragment implements View.OnClickListener
         @Override
         public void onSuccess(int statusCode, Header[] headers,
                               JSONObject response) {
+            try {
+                Log.e("MyResponseHandler", "response: " + response.getString("message"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("MyResponseHandler", "response: " + response.toString());
             try {
                 boolean success = response.getBoolean("success");
                 if (success == false) {

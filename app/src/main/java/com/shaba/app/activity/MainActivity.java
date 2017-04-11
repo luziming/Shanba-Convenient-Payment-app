@@ -111,6 +111,8 @@ public class MainActivity extends BaseActivity {
                         fragment = new ReplacePhoneNumerFragment();
                         break;
                     case R.id.exit:
+                        //销毁token
+                        PrefUtils.putString(MainActivity.this,"token","");
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.activity_open, R.anim.activity_close);
