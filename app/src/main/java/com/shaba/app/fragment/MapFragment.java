@@ -1,5 +1,7 @@
 package com.shaba.app.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,42 +10,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.LocationSource;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.route.BusRouteResult;
-import com.amap.api.services.route.DrivePath;
-import com.amap.api.services.route.DriveRouteResult;
-import com.amap.api.services.route.RideRouteResult;
-import com.amap.api.services.route.RouteSearch;
-import com.amap.api.services.route.WalkRouteResult;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptor;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.Circle;
+import com.amap.api.maps2d.model.CircleOptions;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.shaba.app.R;
 import com.shaba.app.been.MapListEntity;
 import com.shaba.app.fragment.base.BaseFragment;
-import com.shaba.app.global.Const;
-import com.shaba.app.overlay.SchemeDriveOverlay;
-import com.shaba.app.utils.SBLog;
-import com.shaba.app.utils.SchemeUtil;
-import com.shaba.app.utils.StringUtil;
-import com.shaba.app.utils.ToastUtil;
+import com.shaba.app.utils.SensorEventHelper;
 import com.shaba.app.utils.ToastUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,8 +57,7 @@ import butterknife.ButterKnife;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener,
-        View.OnClickListener, RouteSearch.OnRouteSearchListener {
+public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener {
 
     @Bind(R.id.map)
     MapView map;
@@ -82,79 +68,38 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
     @Bind(R.id.iv_choseGPS)
     ImageView ivChoseGPS;
 
-
     private AMap aMap;
-    private OnLocationChangedListener mListener;
+    private LocationSource.OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
-    private boolean isFirst = true;
-    private LatLng latlng;
     private LatLng addressLngLat;
-    private Marker marker;
     private String addressName, address, tel;
-    private LatLonPoint mStartPoint;
-    private LatLonPoint mEndPoint;
-    private RouteSearch mRouteSearch;
+    private Marker mLocMarker;
+    private SensorEventHelper mSensorHelper;
+    private Circle mCircle;
+    private static final int STROKE_COLOR = Color.argb(180, 3, 145, 255);
+    private static final int FILL_COLOR = Color.argb(10, 0, 0, 180);
+    private boolean mFirstFix = false;
+    public static final String LOCATION_MARKER_FLAG = "我";
 
     @Override
     public View initViews() {
         Log.e("MapFragment", "initViews: 执行");
         View view = inflater.inflate(R.layout.fragment_map, null);
-        ButterKnife.bind(this, view);
+        ButterKnife.bind(this,view);
         Bundle arguments = getArguments();
         MapListEntity mapInfo = arguments.getParcelable("mapInfo");
         addressLngLat = new LatLng(
                 Double.valueOf(mapInfo.getLat()), Double.valueOf(mapInfo.getLng()));
         addressName = mapInfo.getName();
         address = mapInfo.getAddress();
+        Log.e("MapFragment", "地址: " + addressName);
         tvBankName.setText(address);
         tel = mapInfo.getTel();
         tvBankTel.setText(tel);
-        ivChoseGPS.setOnClickListener(this);
         initAmap();
-        mEndPoint = new LatLonPoint(addressLngLat.latitude, addressLngLat.longitude);
         return view;
     }
-
-
-
-
-    public void initAmap() {
-
-        //初始化地图控制器对象
-        if (aMap == null) {
-            aMap = map.getMap();
-        }
-        // 自定义系统定位小蓝点
-        MyLocationStyle myLocationStyle = new MyLocationStyle();
-//        myLocationStyle.myLocationIcon(BitmapDescriptorFactory
-//                .fromResource(R.drawable.huaji));// 设置小蓝点的图标
-        myLocationStyle.strokeColor(Color.TRANSPARENT);// 设置圆形的边框颜色
-        myLocationStyle.radiusFillColor(Color.TRANSPARENT);// 设置圆形的填充颜色
-// myLocationStyle.anchor(int,int)//设置小蓝点的锚点
-        myLocationStyle.strokeWidth(0.1f);// 设置圆形的边框粗细
-        aMap.setMyLocationStyle(myLocationStyle);
-
-        // 设置定位监听
-        aMap.setLocationSource(this);
-        // 设置默认定位按钮是否显示
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);
-        // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap.setMyLocationEnabled(true);
-        // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
-
-        aMap.getUiSettings().setScaleControlsEnabled(true);
-
-        aMap.getUiSettings().setZoomControlsEnabled(false);
-        aMap.getUiSettings().setCompassEnabled(true);
-//        AMapNavi.getInstance()
-        addMarkersToMap();
-
-        mRouteSearch = new RouteSearch(mActivity);
-        mRouteSearch.setRouteSearchListener(this);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -164,13 +109,33 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         //创建地图
         map.onCreate(savedInstanceState);
         return rootView;
+
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("MapFragment", "onDestroyView: 执行");
+    public void initAmap() {
+        //初始化地图控制器对象
+        if (aMap == null) {
+            aMap = map.getMap();
+            setUpMap();
+        }
+        if (mSensorHelper != null) {
+            mSensorHelper.registerSensorListener();
+        }
+        addMarkersToMap();
     }
+
+    /**
+     * 设置一些amap的属性
+     */
+    private void setUpMap() {
+        aMap.setLocationSource(this);// 设置定位监听
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
+        aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+        aMap.getUiSettings().setScaleControlsEnabled(true);//设置触摸缩放可见
+        aMap.getUiSettings().setZoomControlsEnabled(false);//设置缩放按钮不可见
+        aMap.getUiSettings().setCompassEnabled(true);//设置指南针可见
+    }
+
 
     @Override
     public void onDestroy() {
@@ -180,7 +145,6 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         if (null != mlocationClient) {
             mlocationClient.onDestroy();
         }
-        ButterKnife.unbind(this);
     }
 
     @Override
@@ -189,14 +153,23 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         Log.e("MapFragment", "onResume: 执行");
         //在执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         map.onResume();
+        if (mSensorHelper != null) {
+            mSensorHelper.registerSensorListener();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        if (mSensorHelper != null) {
+            mSensorHelper.unRegisterSensorListener();
+            mSensorHelper.setCurrentMarker(null);
+            mSensorHelper = null;
+        }
         Log.e("MapFragment", "onPause: 执行");
         //在执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         map.onPause();
+        mFirstFix = false;
     }
 
     @Override
@@ -211,14 +184,12 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
      * 激活定位
      */
     @Override
-    public void activate(OnLocationChangedListener onLocationChangedListener) {
-        this.mListener = onLocationChangedListener;
+    public void activate(LocationSource.OnLocationChangedListener onLocationChangedListener) {
+        mListener = onLocationChangedListener;
         if (mlocationClient == null) {
-            //初始化定位
-            mlocationClient = new AMapLocationClient(mActivity);
-            //初始化定位参数
+            mlocationClient = new AMapLocationClient(getActivity());
             mLocationOption = new AMapLocationClientOption();
-            //设置定位回调监听
+            //设置定位监听
             mlocationClient.setLocationListener(this);
             //设置为高精度定位模式
             mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
@@ -228,7 +199,7 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
             // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
             // 在定位结束后，在合适的生命周期调用onDestroy()方法
             // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
-            mlocationClient.startLocation();//启动定位
+            mlocationClient.startLocation();
         }
     }
 
@@ -246,177 +217,65 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
     }
 
     @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
-        if (mListener != null && aMapLocation != null) {
-            if (aMapLocation != null
-                    && aMapLocation.getErrorCode() == 0) {
-                // 定位成功回调信息，设置相关消息
-//                aMapLocation.getLocationType();// 获取当前定位结果来源，如网络定位结果，详见定位类型表
-//                aMapLocation.getLatitude();// 获取纬度
-//                aMapLocation.getLongitude();// 获取经度
-//                aMapLocation.getAccuracy();// 获取精度信息
-//                SimpleDateFormat df = new SimpleDateFormat(
-//                        "yyyy-MM-dd HH:mm:ss");
-//                Date date = new Date(aMapLocation.getTime());
-//                df.format(date);// 定位时间
-//                aMapLocation.getAddress();// 地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
-//                aMapLocation.getCountry();// 国家信息
-//                aMapLocation.getProvince();// 省信息
-//                aMapLocation.getCity();// 城市信息
-//                aMapLocation.getDistrict();// 城区信息
-//                aMapLocation.getStreet();// 街道信息
-//                aMapLocation.getStreetNum();// 街道门牌号信息
-//                aMapLocation.getCityCode();// 城市编码
-//                aMapLocation.getAdCode();// 地区编码
-//                aMapLocation.getAoiName();// 获取当前定位点的AOI信息
-                mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-
-                Double geoLat = aMapLocation.getLatitude();
-                Double geoLng = aMapLocation.getLongitude();
-
-                mStartPoint = new LatLonPoint(geoLat, geoLng);
-                SBLog.d(mStartPoint.toString());
-                latlng = new LatLng(geoLat, geoLng);
-                if (isFirst) {
-                    LatLngBounds bounds = new LatLngBounds.Builder()
-                            .include(addressLngLat).include(latlng).build();
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,
-                            150));
-                    isFirst = false;
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (mListener != null && amapLocation != null) {
+            if (amapLocation != null
+                    && amapLocation.getErrorCode() == 0) {
+                LatLng location = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                if (!mFirstFix) {
+                    mFirstFix = true;
+                    addCircle(location, amapLocation.getAccuracy());//添加定位精度圆
+                    addMarker(location);//添加定位图标
+                    mSensorHelper.setCurrentMarker(mLocMarker);//定位图标旋转
+                } else {
+                    mCircle.setCenter(location);
+                    mCircle.setRadius(amapLocation.getAccuracy());
+                    mLocMarker.setPosition(location);
                 }
+                aMap.moveCamera(CameraUpdateFactory.changeLatLng(location));
             } else {
-                String errText = "定位失败," + aMapLocation.getErrorCode() + ": " + aMapLocation.getErrorInfo();
+                String errText = "定位失败," + amapLocation.getErrorCode()+ ": " + amapLocation.getErrorInfo();
+                Log.e("AmapErr",errText);
                 ToastUtils.showToast(errText);
-                Log.e("AmapErr", errText);
             }
         }
     }
 
     private void addMarkersToMap() {
-        MarkerOptions markerOption = new MarkerOptions()
-                .anchor(0.5f, 0.5f)
+        MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .position(addressLngLat)
                 .title(addressName)
-                .icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                .draggable(true).period(50);
-
-        ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
-        markerOptionlst.add(markerOption);
-        List<Marker> markerlst = aMap.addMarkers(markerOptionlst, true);
-        marker = markerlst.get(0);
-        marker.showInfoWindow();
+                .draggable(true);
+        aMap.addMarker(markerOption);
+    }
+    private void addCircle(LatLng latlng, double radius) {
+        CircleOptions options = new CircleOptions();
+        options.strokeWidth(1f);
+        options.fillColor(FILL_COLOR);
+        options.strokeColor(STROKE_COLOR);
+        options.center(latlng);
+        options.radius(radius);
+        mCircle = aMap.addCircle(options);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (StringUtil.isFastClick())
-            return;
-        searchRouteResult(2, RouteSearch.DRIVING_SINGLE_DEFAULT);
-    }
-
-    /**
-     * 开始搜索路径规划方案
-     */
-    public void searchRouteResult(int routeType, int mode) {
-        if (mStartPoint == null) {
-            ToastUtils.showToast("定位中，稍后再试...");
+    private void addMarker(LatLng latlng) {
+        if (mLocMarker != null) {
             return;
         }
-        if (mEndPoint == null) {
-            ToastUtils.showToast("终点未设置");
-        }
-        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
-                mStartPoint, mEndPoint);
-        //发送路线计算请求
-        RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, mode, null,
-                null, "");// 第一个参数表示路径规划的起点和终点，第二个参数表示驾车模式，第三个参数表示途经点，第四个参数表示避让区域，第五个参数表示避让道路
-        mRouteSearch.calculateDriveRouteAsyn(query);// 异步路径规划驾车模式查询
+        Bitmap bMap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.navi_map_gps_locked);
+        BitmapDescriptor des = BitmapDescriptorFactory.fromBitmap(bMap);
+
+//		BitmapDescriptor des = BitmapDescriptorFactory.fromResource(R.drawable.navi_map_gps_locked);
+        MarkerOptions options = new MarkerOptions();
+        options.icon(des);
+        options.anchor(0.5f, 0.5f);
+        options.position(latlng);
+        mLocMarker = aMap.addMarker(options);
+        mLocMarker.setTitle(LOCATION_MARKER_FLAG);
     }
 
-    @Override
-    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-//        DrivingRouteOverlay s =
-    }
-
-    private DriveRouteResult mDriveRouteResult;
 
 
-    @Override
-    public void onDriveRouteSearched(DriveRouteResult result, int errorCode) {
-        aMap.clear();// 清理地图上的所有覆盖物
-        if (errorCode == 1000) {
-            if (result != null && result.getPaths() != null) {
-                if (result.getPaths().size() > 0) {
-                    mDriveRouteResult = result;
-                    final DrivePath drivePath = mDriveRouteResult.getPaths()
-                            .get(0);
-                    aMap.clear();// 清理地图上的所有覆盖物
-                    SchemeDriveOverlay drivingRouteOverlay = new SchemeDriveOverlay(
-                            mActivity, aMap, drivePath,
-                            mDriveRouteResult.getStartPos(),
-                            mDriveRouteResult.getTargetPos(), null);
-                    drivingRouteOverlay.removeFromMap();
-                    drivingRouteOverlay.addToMap();
-                    drivingRouteOverlay.zoomToSpan();
-//                    mBottomLayout.setVisibility(View.VISIBLE);
-                    int dis = (int) drivePath.getDistance();
-                    int dur = (int) drivePath.getDuration();
-                    String des = SchemeUtil.getBusRouteTitle(dur, dis);
-                    Toast.makeText(mActivity, des, Toast.LENGTH_LONG).show();
-//                    mRotueTimeDes.setText(des);
-                    int taxiCost = (int) mDriveRouteResult.getTaxiCost();
-                    /*SpannableStringBuilder spanabledes = SchemeUtil
-                            .getRouteDes(this.getApplication(), taxiCost);
-                    mRouteDetailDes.setText(spanabledes);
-                    mBottomLayout.setOnClickListener(new OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(mActivity,
-                                    DriveRouteDetailActivity.class);
-                            intent.putExtra(BundleFlag.DRIVE_PATH, drivePath);
-                            intent.putExtra(BundleFlag.DRIVE_RESULT,
-                                    mDriveRouteResult);
-                            intent.putExtra(BundleFlag.DRIVE_TARGET_NAME,
-                                    mCloudItem.getTitle());
-                            startActivity(intent);
-                        }
-                    });*/
-                } else if (result != null && result.getPaths() == null) {
-                    ToastUtil.show(mActivity, R.string.route_suggestion_walk);
-                }
-
-            } else {
-                ToastUtil.show(mActivity, R.string.error_route_result_drive);
-            }
-        } else if (errorCode == Const.ERROR_CODE_SOCKE_TIME_OUT) {
-            ToastUtil.show(mActivity.getApplicationContext(),
-                    R.string.error_socket_timeout);
-        } else if (errorCode == Const.ERROR_CODE_UNKNOW_HOST) {
-            ToastUtil
-                    .show(mActivity.getApplicationContext(), R.string.error_network);
-        } else if (errorCode == Const.ERROR_CODE_FAILURE_AUTH) {
-            ToastUtil.show(mActivity.getApplicationContext(), R.string.error_key);
-        } else if (errorCode == 33) {
-            ToastUtil.show(mActivity.getApplicationContext(),
-                    R.string.error_route_result_drive);
-        } else if (errorCode == Const.ERROR_CODE_TABLEID) {
-            ToastUtil.show(mActivity.getApplicationContext(),
-                    R.string.error_table_id);
-        } else {
-            ToastUtil.show(mActivity.getApplicationContext(),
-                    getString(R.string.error_other) + errorCode);
-        }
-    }
-
-    @Override
-    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
-
-    }
-
-    @Override
-    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
-
-    }
 }

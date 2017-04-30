@@ -172,7 +172,6 @@ public class RecordFragment extends BaseFragment implements View.OnClickListener
                 });
             }
         });
-
     }
 
     private void queryBill() {

@@ -56,7 +56,6 @@ import de.greenrobot.event.EventBus;
 */
 public class MoreNewsFragment extends BaseLoadingFragment {
 
-
     @Bind(R.id.plv_newsList)
     PullToRefreshListView plvNewsList;
 

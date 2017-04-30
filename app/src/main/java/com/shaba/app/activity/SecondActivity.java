@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.shaba.app.R;
 import com.shaba.app.fragment.BankMapFragment;
+import com.shaba.app.fragment.CableTVFragment;
 import com.shaba.app.fragment.ElectricityFragment;
 import com.shaba.app.fragment.FarmersPointMapFragment;
 import com.shaba.app.fragment.FlowChargeFragment;
@@ -156,6 +157,10 @@ public class SecondActivity extends BaseActivity {
             case "industry-payment":
                 title = "全行业缴费";
 //                fragment = new IndustryPayment();
+                break;
+            case "cable-tv":
+                title = "有线电视";
+                fragment = new CableTVFragment();
                 break;
         }
         fragment.setArguments(bundle);

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEDAB4"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/advice_info"
+        android:drawablePadding="@dimen/padding_or_margin_6"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/padding_or_margin_5"
+        android:paddingLeft="@dimen/padding_or_margin_10"
+        android:paddingRight="@dimen/padding_or_margin_10"
+        android:paddingTop="@dimen/padding_or_margin_5"
+        android:text="@string/advice_info_str"
+        android:textColor="#FF0000"
+        android:textSize="@dimen/padding_or_margin_12" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/padding_or_margin_15">
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/tv_jfxm" />
+
+                <TextView
+                    android:id="@+id/tv_jfxm"
+                    style="@style/textview_info_right" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/tv_yhbh" />
+
+                <TextView
+                    android:id="@+id/tv_yhbh"
+                    style="@style/textview_info_right" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/tv_jfys_" />
+
+                <TextView
+                    android:id="@+id/tv_jfys"
+                    style="@style/textview_info_center" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:text="@string/pay_mouth_num" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/tv_yjje" />
+
+                <TextView
+                    android:id="@+id/tv_yjje"
+                    style="@style/textview_info_center" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:text="@string/string_rmb" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/tv_username" />
+
+                <TextView
+                    android:id="@+id/tv_username"
+                    style="@style/textview_info_right" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <LinearLayout style="@style/textview_info_linelayout">
+
+                <TextView
+                    style="@style/textview_info_left"
+                    android:text="@string/tv_jfje" />
+
+                <EditText
+                    android:id="@+id/tv_jfje"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:background="@drawable/target_input_bg"
+                    android:hint="@string/water_sjje_input"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:lines="1"
+                    android:maxLength="13"
+                    android:padding="@dimen/padding_or_margin_12"
+                    android:textColorHint="@color/phone_recharge_text"
+                    android:textSize="@dimen/text_size_16" />
+            </LinearLayout>
+
+            <View
+                style="@style/view_height_1"
+                android:layout_marginBottom="@dimen/padding_or_margin_5"
+                android:layout_marginTop="@dimen/padding_or_margin_5" />
+
+            <Button
+                android:id="@+id/tv_submit"
+                android:layout_width="match_parent"
+                android:layout_height="45dip"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/padding_or_margin_40"
+                android:layout_marginLeft="@dimen/padding_or_margin_16"
+                android:layout_marginRight="@dimen/padding_or_margin_16"
+                android:layout_marginTop="@dimen/padding_or_margin_40"
+                android:background="@drawable/submit_btn_style"
+                android:clickable="true"
+                android:text="@string/tv_btn_submit"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

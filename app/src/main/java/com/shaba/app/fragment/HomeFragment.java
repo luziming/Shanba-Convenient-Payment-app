@@ -159,8 +159,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
                     type = "social-security";
                     break;
                 case 6:
-                    ToastUtils.showToast("该功能即将上线!");
-                    type = null;
+                    type = "cable-tv";
                     break;
                 case 7:
                     type = "social-status";
@@ -265,6 +264,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
             JSONObject response = null;
             try {
                 response = new JSONObject(new String(bytes));
+                Log.e("HomeBannerResponseHandler", "首页轮播图: " + new String(bytes));
                 JSONArray ary = response.getJSONArray("data");
                 final List<NewsTopPicEntity> topPicList = GsonTools.getProdjects(ary.toString(), NewsTopPicEntity[].class);
                 if (topPicList.size() > 0) {
@@ -304,6 +304,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
             JSONObject response = null;
             try {
                 response = new JSONObject(new String(bytes));
+                Log.e("NewBannerResponseHandler", "新闻轮播图: " + new String(bytes));
                 JSONArray ary = response.getJSONArray("data");
                 List<NewsTopPicEntity> topPicList = GsonTools.getProdjects(ary.toString(), NewsTopPicEntity[].class);
                 if (topPicList.size() > 0) {
@@ -336,6 +337,7 @@ public class HomeFragment extends BaseLoadingFragment implements MenuRecycleAdap
         public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
             JSONObject response = null;
             try {
+                Log.e("NewListResponseHandler", "新闻啊: "  + new String(arg2));
                 response = new JSONObject(new String(arg2));
                 JSONArray ary = response.getJSONArray("data");
                 if (ary.length() > 4 && ary != null) {// 如果数据不为空
