@@ -141,31 +141,31 @@
                     android:numColumns="3"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="@dimen/padding_or_margin_10" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_or_margin_8"
-                    android:layout_marginTop="@dimen/padding_or_margin_15"
-                    android:background="@color/white_content_color"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:text="其他金额"
-                    android:textColor="@color/phone_recharge_text"
-                    android:textSize="@dimen/text_size_16" />
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/padding_or_margin_8"-->
+                    <!--android:layout_marginTop="@dimen/padding_or_margin_15"-->
+                    <!--android:background="@color/white_content_color"-->
+                    <!--android:enabled="false"-->
+                    <!--android:focusable="false"-->
+                    <!--android:focusableInTouchMode="false"-->
+                    <!--android:text="其他金额"-->
+                    <!--android:textColor="@color/phone_recharge_text"-->
+                    <!--android:textSize="@dimen/text_size_16" />-->
 
-                <EditText
-                    android:layout_marginTop="@dimen/padding_or_margin_8"
-                    android:id="@+id/et_other"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/target_input_bg"
-                    android:inputType="number"
-                    android:lines="1"
-                    android:hint="请输入充值金额"
-                    android:padding="@dimen/padding_or_margin_12"
-                    android:textColorHint="@color/phone_recharge_text"
-                    android:textSize="@dimen/text_size_18" />
+                <!--<EditText-->
+                    <!--android:layout_marginTop="@dimen/padding_or_margin_8"-->
+                    <!--android:id="@+id/et_other"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/target_input_bg"-->
+                    <!--android:inputType="number"-->
+                    <!--android:lines="1"-->
+                    <!--android:hint="请输入充值金额"-->
+                    <!--android:padding="@dimen/padding_or_margin_12"-->
+                    <!--android:textColorHint="@color/phone_recharge_text"-->
+                    <!--android:textSize="@dimen/text_size_18" />-->
                 <Button
                     android:id="@+id/elec_recharge_btn"
                     android:textColor="@color/white"

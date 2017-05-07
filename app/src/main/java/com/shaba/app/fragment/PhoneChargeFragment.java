@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -51,8 +50,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.shaba.app.R.id.et_other;
 
 /*
                    _ooOoo_
@@ -91,8 +88,6 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
     Button submit;
     @Bind(R.id.ll_yunyingshang)
     LinearLayout ll_type;
-    @Bind(et_other)
-    EditText et_amount;
 
     private static final int REQUEST_CODE_SETTING = 300;
     //缴费金额列表
@@ -104,11 +99,13 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
             add("50元");
             add("100元");
             add("200元");
+            add("300元");
+            add("500元");
         }
     };
     //缴费模式  phone  tel  broadBand
     private String mMode;
-    private String chargeAmount = "";
+    private String chargeAmount = "10";
     private PhoneChargeAdapter chargeAdapter;
     private int yys_type = 0;
     private boolean isCheckedAmount = false;
@@ -137,6 +134,8 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
             initAutoComplete("broadband", phoneNumer);
         }
         chargeAdapter = new PhoneChargeAdapter(mActivity, amountList);
+        chargeAdapter.setSelectItem(0);
+        chargeAdapter.notifyDataSetChanged();
         gridView.setAdapter(chargeAdapter);
         //提交按钮
         submit.setOnClickListener(this);
@@ -198,19 +197,6 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
                         ToastUtils.showToast("暂不支持移动电信充值");
                         return;
                     }
-                }
-                chargeAmount = et_amount.getText().toString().trim();
-                if (TextUtils.isEmpty(chargeAmount)) {      //是否为自定义金额
-                    if (isCheckedAmount) {
-                        chargeAmount = et_amount.getHint().toString().trim();
-                    } else {
-                        ToastUtils.showToast("请选择充值金额");
-                        return;
-                    }
-                }
-                if (TextUtils.isEmpty(chargeAmount)) {
-                    ToastUtils.showToast("请选择充值金额");
-                    return;
                 }
 
                 if (mMode.equals("phone")) {
@@ -309,7 +295,6 @@ public class PhoneChargeFragment extends BaseFragment implements View.OnClickLis
             isCheckedAmount = true;
         TextView tv = (TextView) view.findViewById(R.id.item_amount);
         chargeAmount = tv.getText().toString().split(ConstantUtil.RMB)[0];
-        et_amount.setHint(chargeAmount);
         submit.setText("立即充值:" + ConstantUtil.CHINA_RMB + chargeAmount + ConstantUtil.RMB);
         chargeAdapter.setSelectItem(position);
         //如果不走这个选择器不会生效,性能方面不是很好,有待改进
