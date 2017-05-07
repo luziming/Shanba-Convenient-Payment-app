@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/fragment_bg"
     android:clickable="true"
@@ -12,41 +13,46 @@
         android:layout_height="match_parent"/>
 
     <RelativeLayout
-        android:padding="8dp"
-        android:background="@color/white"
-        android:layout_gravity="bottom|center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/ll_bank_info"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_alignParentRight="true"
+            android:id="@+id/fab_daohang"
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_directions_car_black_24dp"
+            app:backgroundTint="@color/appt_title_backcolor"
+            app:elevation="6dp" />
+
+        <LinearLayout
+            android:layout_below="@id/fab_daohang"
+            android:background="#f7f7f7"
+            android:padding="@dimen/padding_or_margin_8"
+            android:id="@+id/ll_bank_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_bank_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="陕坝农商银行和哈哈哈哈哈哈"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:text="陕坝农商银行和哈哈哈哈哈哈" />
+
             <TextView
                 android:id="@+id/bank_tel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="12321321哈哈312"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000" />
+                />
         </LinearLayout>
-        <ImageView
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="3dp"
-            android:id="@+id/iv_choseGPS"
-            android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/ll_bank_info"
-            android:layout_width="25dp"
-            android:layout_height="28dp"
-            android:background="@mipmap/nav_icon"/>
     </RelativeLayout>
 </FrameLayout>

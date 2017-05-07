@@ -1,14 +1,13 @@
 package com.shaba.app.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -19,18 +18,28 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptor;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.Circle;
-import com.amap.api.maps2d.model.CircleOptions;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.LatLngBounds;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.MyLocationStyle;
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DrivePath;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.shaba.app.R;
 import com.shaba.app.been.MapListEntity;
 import com.shaba.app.fragment.base.BaseFragment;
-import com.shaba.app.utils.SensorEventHelper;
+import com.shaba.app.utils.AMapUtil;
+import com.shaba.app.utils.StringUtil;
 import com.shaba.app.utils.ToastUtils;
+import com.shaba.app.view.DrivingRouteOverLay;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +66,8 @@ import butterknife.ButterKnife;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
 */
-public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener {
+public class MapFragment extends BaseFragment implements LocationSource, AMapLocationListener,
+        View.OnClickListener ,RouteSearch.OnRouteSearchListener{
 
     @Bind(R.id.map)
     MapView map;
@@ -65,22 +75,29 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
     TextView tvBankName;
     @Bind(R.id.bank_tel)
     TextView tvBankTel;
-    @Bind(R.id.iv_choseGPS)
-    ImageView ivChoseGPS;
+    @Bind(R.id.fab_daohang)
+    FloatingActionButton fab;
 
     private AMap aMap;
-    private LocationSource.OnLocationChangedListener mListener;
+    private OnLocationChangedListener mListener;
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
     private LatLng addressLngLat;
     private String addressName, address, tel;
     private Marker mLocMarker;
-    private SensorEventHelper mSensorHelper;
+    //    private SensorEventHelper mSensorHelper;
     private Circle mCircle;
     private static final int STROKE_COLOR = Color.argb(180, 3, 145, 255);
     private static final int FILL_COLOR = Color.argb(10, 0, 0, 180);
     private boolean mFirstFix = false;
     public static final String LOCATION_MARKER_FLAG = "我";
+    private LatLng location;
+    private ProgressDialog progDialog = null;// 搜索时进度条
+    private RouteSearch mRouteSearch;
+    private DriveRouteResult mDriveRouteResult;
+    private boolean isShowRoute = false;
+    private DrivingRouteOverLay drivingRouteOverlay;
+
 
     @Override
     public View initViews() {
@@ -97,7 +114,10 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         tvBankName.setText(address);
         tel = mapInfo.getTel();
         tvBankTel.setText(tel);
+        fab.setOnClickListener(this);
         initAmap();
+        mRouteSearch = new RouteSearch(getActivity());
+        mRouteSearch.setRouteSearchListener(this);
         return view;
     }
 
@@ -111,16 +131,15 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         return rootView;
 
     }
-
     public void initAmap() {
         //初始化地图控制器对象
         if (aMap == null) {
             aMap = map.getMap();
             setUpMap();
         }
-        if (mSensorHelper != null) {
-            mSensorHelper.registerSensorListener();
-        }
+//        if (mSensorHelper != null) {
+//            mSensorHelper.registerSensorListener();
+//        }
         addMarkersToMap();
     }
 
@@ -134,8 +153,24 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         aMap.getUiSettings().setScaleControlsEnabled(true);//设置触摸缩放可见
         aMap.getUiSettings().setZoomControlsEnabled(false);//设置缩放按钮不可见
         aMap.getUiSettings().setCompassEnabled(true);//设置指南针可见
+        addMyLocaltion();
     }
 
+    private void addMyLocaltion() {
+        // 自定义系统定位蓝点
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        // 自定义定位蓝点图标
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.
+                fromResource(R.drawable.gps_point));
+        // 自定义精度范围的圆形边框颜色
+        myLocationStyle.strokeColor(STROKE_COLOR);
+        //自定义精度范围的圆形边框宽度
+        myLocationStyle.strokeWidth(5);
+        // 设置圆形的填充颜色
+        myLocationStyle.radiusFillColor(FILL_COLOR);
+        // 将自定义的 myLocationStyle 对象添加到地图上
+        aMap.setMyLocationStyle(myLocationStyle);
+    }
 
     @Override
     public void onDestroy() {
@@ -153,19 +188,19 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         Log.e("MapFragment", "onResume: 执行");
         //在执行onResume时执行mMapView.onResume ()，重新绘制加载地图
         map.onResume();
-        if (mSensorHelper != null) {
-            mSensorHelper.registerSensorListener();
-        }
+//        if (mSensorHelper != null) {
+//            mSensorHelper.registerSensorListener();
+//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mSensorHelper != null) {
-            mSensorHelper.unRegisterSensorListener();
-            mSensorHelper.setCurrentMarker(null);
-            mSensorHelper = null;
-        }
+//        if (mSensorHelper != null) {
+//            mSensorHelper.unRegisterSensorListener();
+//            mSensorHelper.setCurrentMarker(null);
+//            mSensorHelper = null;
+//        }
         Log.e("MapFragment", "onPause: 执行");
         //在执行onPause时执行mMapView.onPause ()，暂停地图的绘制
         map.onPause();
@@ -184,7 +219,7 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
      * 激活定位
      */
     @Override
-    public void activate(LocationSource.OnLocationChangedListener onLocationChangedListener) {
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
         mListener = onLocationChangedListener;
         if (mlocationClient == null) {
             mlocationClient = new AMapLocationClient(getActivity());
@@ -221,21 +256,25 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
         if (mListener != null && amapLocation != null) {
             if (amapLocation != null
                     && amapLocation.getErrorCode() == 0) {
-                LatLng location = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                location = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                 if (!mFirstFix) {
                     mFirstFix = true;
-                    addCircle(location, amapLocation.getAccuracy());//添加定位精度圆
-                    addMarker(location);//添加定位图标
-                    mSensorHelper.setCurrentMarker(mLocMarker);//定位图标旋转
+//                    addCircle(location, amapLocation.getAccuracy());//添加定位精度圆
+//                    addMarker(location);//添加定位图标
+//                    mSensorHelper.setCurrentMarker(mLocMarker);//定位图标旋转
+
                 } else {
                     mCircle.setCenter(location);
                     mCircle.setRadius(amapLocation.getAccuracy());
                     mLocMarker.setPosition(location);
                 }
-                aMap.moveCamera(CameraUpdateFactory.changeLatLng(location));
+                mListener.onLocationChanged(amapLocation);
+//                mSensorHelper.setCurrentMarker(mLocMarker);//定位图标旋转
+                LatLngBounds bounds = LatLngBounds.builder().include(addressLngLat).include(location).build();
+                aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
             } else {
-                String errText = "定位失败," + amapLocation.getErrorCode()+ ": " + amapLocation.getErrorInfo();
-                Log.e("AmapErr",errText);
+                String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
+                Log.e("AmapErr", errText);
                 ToastUtils.showToast(errText);
             }
         }
@@ -249,33 +288,119 @@ public class MapFragment extends BaseFragment implements LocationSource, AMapLoc
                 .draggable(true);
         aMap.addMarker(markerOption);
     }
-    private void addCircle(LatLng latlng, double radius) {
-        CircleOptions options = new CircleOptions();
-        options.strokeWidth(1f);
-        options.fillColor(FILL_COLOR);
-        options.strokeColor(STROKE_COLOR);
-        options.center(latlng);
-        options.radius(radius);
-        mCircle = aMap.addCircle(options);
+
+
+    @Override
+    public void onClick(View v) {
+        if (StringUtil.isFastClick())
+            return;
+        if (!isShowRoute) {
+            fab.setImageResource(R.drawable.ic_clear_black_24dp);
+            searchRoute();
+        } else {
+            fab.setImageResource(R.drawable.ic_directions_car_black_24dp);
+            aMap.clear();
+            addMarkersToMap();
+            isShowRoute = false;
+        }
     }
 
-    private void addMarker(LatLng latlng) {
-        if (mLocMarker != null) {
+    /**
+     * 规划路线
+     */
+    private void searchRoute() {
+        showProgressDialog();
+        if (location == null) {
+            ToastUtils.showToast("定位中，稍后再试...");
             return;
         }
-        Bitmap bMap = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.navi_map_gps_locked);
-        BitmapDescriptor des = BitmapDescriptorFactory.fromBitmap(bMap);
-
-//		BitmapDescriptor des = BitmapDescriptorFactory.fromResource(R.drawable.navi_map_gps_locked);
-        MarkerOptions options = new MarkerOptions();
-        options.icon(des);
-        options.anchor(0.5f, 0.5f);
-        options.position(latlng);
-        mLocMarker = aMap.addMarker(options);
-        mLocMarker.setTitle(LOCATION_MARKER_FLAG);
+        if (addressLngLat == null) {
+            ToastUtils.showToast("重点未设置");
+            return;
+        }
+        LatLonPoint mStartPoint = new LatLonPoint(location.latitude, location.longitude);
+        LatLonPoint mEndPoint = new LatLonPoint(addressLngLat.latitude, addressLngLat.longitude);
+        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(mStartPoint, mEndPoint);
+        // 第一个参数表示路径规划的起点和终点，第二个参数表示驾车模式，第三个参数表示途经点，第四个参数表示避让区域，第五个参数表示避让道路
+        RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, RouteSearch.DrivingDefault, null,
+                null, "");
+        mRouteSearch.calculateDriveRouteAsyn(query);// 异步路径规划驾车模式查询
     }
 
+    /**
+     * 显示进度框
+     */
+    private void showProgressDialog() {
+        if (progDialog == null)
+            progDialog = new ProgressDialog(getActivity());
+        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDialog.setIndeterminate(false);
+        progDialog.setCancelable(true);
+        progDialog.setMessage("正在搜索");
+        progDialog.show();
+    }
 
+    /**
+     * 隐藏进度框
+     */
+    private void dissmissProgressDialog() {
+        if (progDialog != null) {
+            progDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int errorCode) {
+        aMap.clear();// 清理地图上的所有覆盖物
+        if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (driveRouteResult != null && driveRouteResult.getPaths() != null) {
+                if (driveRouteResult.getPaths().size() > 0) {
+                    mDriveRouteResult = driveRouteResult;
+                    final DrivePath drivePath = mDriveRouteResult.getPaths()
+                            .get(0);
+                    drivingRouteOverlay = new DrivingRouteOverLay(
+                            mActivity, aMap, drivePath,
+                            mDriveRouteResult.getStartPos(),
+                            mDriveRouteResult.getTargetPos(), null);
+                    drivingRouteOverlay.setNodeIconVisibility(false);//设置节点marker是否显示
+                    drivingRouteOverlay.setIsColorfulline(true);//是否用颜色展示交通拥堵情况，默认true
+                    drivingRouteOverlay.removeFromMap();
+                    drivingRouteOverlay.addToMap();
+                    drivingRouteOverlay.zoomToSpan();
+//                    mBottomLayout.setVisibility(View.VISIBLE);
+                    int dis = (int) drivePath.getDistance();
+                    int dur = (int) drivePath.getDuration();
+                    String des = "开车约" + AMapUtil.getFriendlyTime(dur) + "(" + AMapUtil.getFriendlyLength(dis) + ")";
+                    int taxiCost = (int) mDriveRouteResult.getTaxiCost();
+                    drivingRouteOverlay.setStartSnippet(des);
+                    drivingRouteOverlay.setEndSnippet(addressName);
+                    isShowRoute = true;
+                    dissmissProgressDialog();
+                } else if (driveRouteResult != null && driveRouteResult.getPaths() == null) {
+                    ToastUtils.showToast("没有结果");
+                }
+
+            } else {
+                ToastUtils.showToast("没有结果");
+            }
+        } else {
+            ToastUtils.showToast("" + errorCode);
+        }
+    }
+
+    @Override
+    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+
+    }
 
 }
